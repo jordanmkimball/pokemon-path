@@ -13,6 +13,13 @@ var async = require('async');
 var sqlite3 = require('sqlite3').verbose();
 var db = new sqlite3.Database('pokemon.db');
 
+//Declaring the PostgreSQL database
+const { Pool } = require('pg');
+const pool = new Pool({
+  connectionString: process.env.DATABASE_URL,
+  ssl: true
+});
+
 //My own custom module to decode the availability letters.
 var ad = require('./availabilityDecoder');
 
@@ -497,3 +504,19 @@ exports.pokemon_id_search = function (req, res, next){
         }
     });
 };
+
+
+//EXPERIMENTAL FUNCTION FOR db_get to see if I can get Postgre SQL to work
+
+exports.db_get = async (req, res) => {
+    try {
+      const client = await pool.connect()
+      const result = await client.query('SELECT * FROM AvPokemon');
+      res.render('pages/db', result);
+      client.release();
+    } catch (err) {
+      console.error(err);
+      res.send("Error " + err);
+    }
+  };
+  

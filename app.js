@@ -10,6 +10,13 @@ var sqlite3 = require('sqlite3');
 //Require both the compression and helmet modules
 var compression = require('compression');
 var helmet = require('helmet');
+//NEW CODE REQUIRED FOR HEROKU TO USE POSGRESQL
+const { Pool } = require('pg');
+const pool = new Pool({
+  connectionString: process.env.DATABASE_URL,
+  ssl: true
+});
+//END OF NEW CODE REQUIRED FOR HEROKU TO USE POSGRESQL
 
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
@@ -53,4 +60,13 @@ app.use(function(err, req, res, next) {
   res.render('error');
 });
 
+
+
 module.exports = app;
+
+
+
+
+
+
+
