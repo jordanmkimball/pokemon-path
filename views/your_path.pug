@@ -1,0 +1,120 @@
+extends layout
+
+block content
+  div.maintext
+    h1= title
+    
+    h3 Which games do you own?
+    img#jigglypuff(src = '../images/jigglypuff.png', alt = 'Pixelated Picture of Jigglypuff')
+
+    form(method='POST' action='')
+      div.form-group 
+        label Games:
+        div
+          div(style='display: inline; padding-right:10px;')
+            input.checkbox-input(type='checkbox', name='ultra_sun', id="ultraSunBox", value='ultra_sun')
+            label Ultra Sun
+            <br>
+            input.checkbox-input(type='checkbox', name='ultra_moon', id="ultraMoonBox", value='ultra_moon')
+            label Ultra Moon
+            <br>
+            input.checkbox-input(type='checkbox', name='sun', id="sunBox", value='sun')
+            label Sun
+            <br>
+            input.checkbox-input(type='checkbox', name='moon', id="moonBox", value='moon')
+            label Moon
+            <br>
+            input.checkbox-input(type='checkbox', name='omega_ruby', id="omegaRubyBox", value='omega_ruby')
+            label Omega Ruby
+            <br>
+            input.checkbox-input(type='checkbox', name='alpha_sapphire', id="alphaSapphireBox", value='alpha_sapphire')
+            label Alpha Sapphire
+            <br>
+            input.checkbox-input(type='checkbox', name='x', id="xBox", value='x')
+            label X
+            <br>
+            input.checkbox-input(type='checkbox', name='y', id="yBox", value='y')
+            label Y
+            <br>
+            input.checkbox-input(type='checkbox', name='black_2', id="black2Box", value='black_2')
+            label Black 2
+            <br>
+            input.checkbox-input(type='checkbox', name='white_2', id="white2Box", value='white_2')
+            label White 2
+            <br>
+            input.checkbox-input(type='checkbox', name='black', id="blackBox", value='black')
+            label Black
+            <br>
+            input.checkbox-input(type='checkbox', name='white', id="whiteBox", value='white')
+            label White
+            <br>
+            input.checkbox-input(type='checkbox', name='heartgold', id="heartGoldBox", value='heartgold')
+            label HeartGold
+            <br>
+            input.checkbox-input(type='checkbox', name='soulsilver', id="soulSilverBox", value='soulsilver')
+            label SoulSilver
+            <br>
+            input.checkbox-input(type='checkbox', name='diamond', id="diamondBox", value='diamond')
+            label Diamond
+            <br>
+            input.checkbox-input(type='checkbox', name='pearl', id="pearlBox", value='pearl')
+            label Pearl
+            <br>
+            input.checkbox-input(type='checkbox', name='platinum', id="platinumBox", value='platinum')
+            label Platinum
+            <br>
+            input.checkbox-input(type='checkbox', name='firered', id="fireRedBox", value='firered')
+            label FireRed
+            <br>
+            input.checkbox-input(type='checkbox', name='leafgreen', id="leafGreenBox", value='leafgreen')
+            label LeafGreen
+            <br>
+            input.checkbox-input(type='checkbox', name='ruby', id="rubyBox", value='ruby')
+            label Ruby
+            <br>
+            input.checkbox-input(type='checkbox', name='sapphire', id="sapphireBox", value='sapphire')
+            label Sapphire
+            <br>
+            input.checkbox-input(type='checkbox', name='emerald', id="emeraldBox", value='emerald')
+            label Emerald
+            <br>
+            input.checkbox-input(type='checkbox', name='gold', id="goldBox", value='gold')
+            label Gold
+            <br>
+            input.checkbox-input(type='checkbox', name='silver', id="silverBox", value='silver')
+            label Silver
+            <br>
+            input.checkbox-input(type='checkbox', name='crystal_3DS', id="crystal3DSBox", value='crystal_3DS')
+            label Crystal (3DS Virtual Console)
+            <br>
+            input.checkbox-input(type='checkbox', name='crystal', id="crystalBox", value='crystal')
+            label Crystal (Gameboy)
+            <br>
+            input.checkbox-input(type='checkbox', name='red', id="redBox", value='red')
+            label Red
+            <br>
+            input.checkbox-input(type='checkbox', name='blue', id="blueBox", value='blue')
+            label Blue (American Release)
+            <br>
+            input.checkbox-input(type='checkbox', name='yellow', id="yellowBox", value='yellow')
+            label Yellow: Special Pikachu Edition
+            <br>
+            <br>
+            h3 Additional Options:
+            input.checkbox-input(type='checkbox', name='friend_safari', id="friendSafariBox", value='friend_safari')
+            label I have full access to the Friend Safari (Applies to Pokémon X and Y)
+            <br>
+            input.checkbox-input(type='checkbox', name='dream_radar', id="dreamRadarBox", value='dream_radar')
+            label I have access to the Dream Radar (Applies to Pokémon Black 2 and White 2)
+            <br>
+            input.checkbox-input(type='checkBox', name='pokewalker', id='pokewalkerBox', value='pokewalker')
+            label I own the Pokéwalker. (Applies to HeartGold and SoulSilver)
+            <br>
+            input.checkbox-input(type='checkbox', name='dual_slot', id='duelSlotBox', value='dual_slot')
+            label I have an older DS that allows me to catch Pokémon via Dual Slot Mode (Applies to Diamond, Pearl, and Platinum)
+        
+      <br>
+      <br>    
+      button.btn.btn-primary(type='submit') Submit
+
+    

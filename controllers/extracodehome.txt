@@ -1,0 +1,709 @@
+ var Names = [];
+                for (var i=0; i<rows.length; i++){
+                    Names.push(rows[i].Name);
+                }
+                res.render('avail_game', {title: 'Pokémon Available in ', names: Names});
+
+
+
+//Code for a removed route that didn't work with Query Strings
+
+//GET request for list of available pokemon in a particular game
+router.get('/search/where', main_controller.pokemon_avail_game);
+
+CODE IN mainController.js
+
+//Display list of available pokemon in a particular game
+//Use with localhost:3000/search/where?game=USun
+exports.pokemon_avail_game = function (req, res, next){
+    if (req.query.game) {
+        db.get('SELECT Name FROM AvPokemon WHERE ? IN ("C","E","B","R","S")', function (err,row){
+            if (err) {res.send(err.message);}
+            //No Error so render
+            else{
+                console.log('Return list of Pokemon Available in ' + req.query.game);
+                res.json(row);
+            }
+        }
+        )};
+};
+
+
+
+//SUCCESFUL POST REQUEST AND RESPONSE FOR EITHER LIST OF ALL POKEMON AVAILABLE OR LIST OF POKEMON IN ULTRA SUN
+
+//Handle Pokemon Search page POST request
+exports.pokemon_search_post = function (req, res, next){
+    console.log(req.body.ultra_sun)
+        if (req.body.ultra_sun == 'ultra_sun'){
+            var sqlQuery = 'SELECT Name FROM AvPokemon WHERE USun IN ("C","E","B","R","S")';
+            }
+        else {
+            var sqlQuery = 'SELECT Name FROM AvPokemon';
+        }
+    db.all(sqlQuery, function (err,rows) {
+        if (err) {res.send(err.message);}
+        //No error so render
+        else{
+            var Names = [];
+            for (var i=0; i<rows.length; i++){
+                Names.push(rows[i].Name);
+            }
+            res.render('avail_usun', {title: 'Pokémon List', names: Names});
+        }
+    })
+};
+
+
+//COPY OF WORKING CODE OBTAINED SUCCESS THROUGH COMBINING TWO ARRAYS INTO AN OBJECT
+
+/Display list of Id's and names of all available pokemon in Ultra Moon
+exports.pokemon_avail_ultramoon = function (req, res, next){
+    console.log("Return list of Ids and Pokemon Names of Available Pokemon in Ultra Moon");
+    db.all('SELECT Id, Name FROM AvPokemon WHERE UMoon IN ("C","E","B","R","S")', function (err, rows){
+        if (err) {res.send(err.message);}
+        //No error so render
+        var Ids = [];
+        for (var i=0; i<rows.length; i++){
+            Ids.push(rows[i].Id);
+        }
+        var Names = [];
+        for (var i=0; i<rows.length; i++){
+            Names.push(rows[i].Name);
+        }
+        var Pokemon = {};
+        Ids.forEach((Id, i) => Pokemon[Id] = Names[i]);
+        res.render('avail_umoon', {title: 'Pokémon Available in Ultra Moon', pokemon: Pokemon});
+    });
+};
+
+
+//COPY OF WORKING CODE: pokemon_search_post3 [Prior to additional options being added]
+
+//Display missing pokemon for pokemon_search3 on POST
+exports.pokemon_search3_post = function (req, res, next){
+    //Game count necessary in case user didn't select any boxes
+    var gameCount = 0;
+    //Seeing whether the user checked the Ultra Sun Box
+    if (req.body.ultra_sun == 'ultra_sun') {
+        var ultraSun = ' AND USun NOT IN ("C","E","B","R","S")';
+        gameCount+= 1;
+    }
+    else{
+        var ultraSun = '';
+    }
+    if (req.body.ultra_moon == 'ultra_moon') {
+        var ultraMoon = ' AND UMoon NOT IN ("C","E","B","R","S")';
+        gameCount+= 1;
+    }
+    else{
+        var ultraMoon = '';
+    }
+    if (req.body.sun == 'sun') {
+        var sun = ' AND Sun NOT IN ("C","E","B","R","S")';
+        gameCount+= 1;
+    }
+    else{
+        var sun = '';
+    }
+    if (req.body.moon == 'moon') {
+        var moon = ' AND Moon NOT IN ("C","E","B","R","S")';
+        gameCount+= 1;
+    }
+    else{
+        var moon = '';
+    }
+    if (req.body.omega_ruby == 'omega_ruby') {
+        var omegaRuby = ' AND OmegaR NOT IN ("C","E","B","R","S")';
+        gameCount+= 1;
+    }
+    else{
+        var omegaRuby = '';
+    }
+    if (req.body.alpha_sapphire == 'alpha_sapphire') {
+        var alphaSapphire = ' AND AlphaS NOT IN ("C","E","B","R","S")';
+        gameCount+= 1;
+    }
+    else{
+        var alphaSapphire = '';
+    }
+    if (req.body.x == 'x') {
+        var x = ' AND X NOT IN ("C","E","B","R","S")';
+        gameCount+= 1;
+    }
+    else{
+        var x = '';
+    }
+    if (req.body.y == 'y') {
+        var y = ' AND Y NOT IN ("C","E","B","R","S")';
+        gameCount+= 1;
+    }
+    else{
+        var y = '';
+    }
+    if (req.body.black_2 == 'black_2') {
+        var black2 = ' AND Black2 NOT IN ("C","E","B","R","S")';
+        gameCount+= 1;
+    }
+    else{
+        var black2 = '';
+    }
+    if (req.body.white_2 == 'white_2') {
+        var white2 = ' AND White2 NOT IN ("C","E","B","R","S")';
+        gameCount+= 1;
+    }
+    else{
+        var white2 = '';
+    }
+    if (req.body.black == 'black') {
+        var black = ' AND Black NOT IN ("C","E","B","R","S")';
+        gameCount+= 1;
+    }
+    else{
+        var black = '';
+    }
+    if (req.body.white == 'white') {
+        var white = ' AND White NOT IN ("C","E","B","R","S")';
+        gameCount+= 1;
+    }
+    else{
+        var white = '';
+    }
+    if (req.body.heartgold == 'heartgold') {
+        var heartGold = ' AND HeartGold NOT IN ("C","E","B","R","S")';
+        gameCount+= 1;
+    }
+    else{
+        var heartGold = '';
+    }
+    if (req.body.soulsilver == 'soulsilver') {
+        var soulSilver = ' AND SoulSilver NOT IN ("C","E","B","R","S")';
+        gameCount+= 1;
+    }
+    else{
+        var soulSilver = '';
+    }
+    if (req.body.diamond == 'diamond') {
+        var diamond = ' AND Diamond NOT IN ("C","E","B","R","S")';
+        gameCount+= 1;
+    }
+    else{
+        var diamond = '';
+    }
+    if (req.body.pearl == 'pearl') {
+        var pearl = ' AND Pearl NOT IN ("C","E","B","R","S")';
+        gameCount+= 1;
+    }
+    else{
+        var pearl = '';
+    }
+    if (req.body.platinum == 'platinum') {
+        var platinum = ' AND Platinum NOT IN ("C","E","B","R","S")';
+        gameCount+= 1;
+    }
+    else{
+        var platinum = '';
+    }
+    if (req.body.firered == 'firered') {
+        var fireRed = ' AND FireRed NOT IN ("C","E","B","R","S")';
+        gameCount+= 1;
+    }
+    else{
+        var fireRed = '';
+    }
+    if (req.body.leafgreen == 'leafgreen') {
+        var leafGreen = ' AND leafGreen NOT IN ("C","E","B","R","S")';
+        gameCount+= 1;
+    }
+    else{
+        var leafGreen = '';
+    }
+    if (req.body.ruby == 'ruby') {
+        var ruby = ' AND Ruby NOT IN ("C","E","B","R","S")';
+        gameCount+= 1;
+    }
+    else{
+        var ruby = '';
+    }
+    if (req.body.sapphire == 'sapphire') {
+        var sapphire = ' AND Sapphire NOT IN ("C","E","B","R","S")';
+        gameCount+= 1;
+    }
+    else{
+        var sapphire = '';
+    }
+    if (req.body.emerald == 'emerald') {
+        var emerald = ' AND Emerald NOT IN ("C","E","B","R","S")';
+        gameCount+= 1;
+    }
+    else{
+        var emerald = '';
+    }
+    if (req.body.gold == 'gold') {
+        var gold = ' AND Gold NOT IN ("C","E","B","R","S")';
+        gameCount+= 1;
+    }
+    else{
+        var gold = '';
+    }
+    if (req.body.silver == 'silver') {
+        var silver = ' AND Silver NOT IN ("C","E","B","R","S")';
+        gameCount+= 1;
+    }
+    else{
+        var silver = '';
+    }
+    if (req.body.crystal_3DS == 'crystal_3DS') {
+        var crystal3DS = ' AND Crystal3DS NOT IN ("C","E","B","R","S")';
+        gameCount+= 1;
+    }
+    else{
+        var crystal3DS = '';
+    }
+    if (req.body.crystal == 'crystal') {
+        var crystal = ' AND Crystal NOT IN ("C","E","B","R","S")';
+        gameCount+= 1;
+    }
+    else{
+        var crystal = '';
+    }
+    if (req.body.red == 'red') {
+        var red = ' AND Red NOT IN ("C","E","B","R","S")';
+        gameCount+= 1;
+    }
+    else{
+        var red = '';
+    }
+    if (req.body.blue == 'blue') {
+        var blue = ' AND EngBlue NOT IN ("C","E","B","R","S")';
+        gameCount+= 1;
+    }
+    else{
+        var blue = '';
+    }
+    if (req.body.yellow == 'yellow') {
+        var yellow = ' AND Yellow NOT IN ("C","E","B","R","S")';
+        gameCount+= 1;
+    }
+    else{
+        var yellow = '';
+    }
+
+    //Case where user didn't check any of the boxes. Return full list of Pokemon
+    if (gameCount == 0) {
+        var sqlQuery = 'SELECT Id, Name FROM AvPokemon';
+        var sqlCountQuery = 'SELECT COUNT(Id) AS Pokemon_Count FROM AvPokemon';
+    }
+    else{
+        var whereStatement = ultraSun + ultraMoon + sun + moon + omegaRuby + alphaSapphire + x + y + black2 + white2 + black + white + heartGold + soulSilver + diamond + pearl + platinum + fireRed + leafGreen + ruby + sapphire + emerald + gold + silver + crystal3DS + crystal + red + blue + yellow
+        //Need to delete the extra ' AND' so SQL doesn't freak out
+        var newWhereStatement = whereStatement.replace(' AND', '');
+        //Excluding the event only Pokemon
+        var sqlQuery = 'SELECT Id, Name FROM AvPokemon WHERE ' + newWhereStatement + ' AND Id NOT IN (151, 385, 489, 490, 491, 492, 493, 494, 647, 648, 649, 719, 720, 721, 801, 802, 807)';
+        //Including query to count the number of missing Pokemon
+        var sqlCountQuery = 'SELECT COUNT(Id) AS Pokemon_Count FROM AvPokemon WHERE ' + newWhereStatement + 'AND Id NOT IN (151, 385, 489, 490, 491, 492, 493, 494, 647, 648, 649, 719, 720, 721, 801, 802, 807)';
+    }
+    console.log(sqlQuery);
+    console.log(sqlCountQuery)
+    //Now to actually pull the information from the database. 
+    db.all(sqlQuery, function (err,rows) {
+        if (err) {res.send(err.message);}
+        //No error so proceed
+        var Ids = [];
+        for (var i=0; i<rows.length; i++){
+            Ids.push(rows[i].Id);
+        }
+        var Names = [];
+        for (var i=0; i<rows.length; i++){
+            Names.push(rows[i].Name);
+        }
+        var Pokemon = {};
+        Ids.forEach((Id, i) => Pokemon[Id] = Names[i]);
+        //2nd SQL Query for the Count of the missing pokemon
+        db.get(sqlCountQuery, function (err, row){
+            if (err) {res.send(err.message);}
+            //No error so render
+            var pokemonCount = 'You are currently missing: ' + row.Pokemon_Count + ' Pokémon';
+            res.render('missing_pokemon2', {title: 'Pokémon you are not able to catch in game based on your current games', pokemon: Pokemon, pokemon_count: pokemonCount});
+        });
+    })
+};
+
+
+
+
+
+
+
+
+
+
+
+
+
+//SUCCESSFUL CODE COPY OF pokemon_search_post3 [After Additional Options added]
+
+//Display pokemon_search3 page on GET
+exports.pokemon_search3 = function (req, res, next){
+    res.render('pokemon_search3', {title: 'Which Pokémon are you missing?'});
+};
+ 
+
+//Display missing pokemon for pokemon_search3 on POST
+exports.pokemon_search3_post = function (req, res, next){
+    //Game count necessary in case user didn't select any boxes
+    var gameCount = 0;
+    //Seeing whether the user checked the Ultra Sun Box
+    if (req.body.ultra_sun == 'ultra_sun') {
+        var ultraSun = ' AND USun NOT IN ("C","E","B","R","S")';
+        gameCount+= 1;
+    }
+    else{
+        var ultraSun = '';
+    }
+    if (req.body.ultra_moon == 'ultra_moon') {
+        var ultraMoon = ' AND UMoon NOT IN ("C","E","B","R","S")';
+        gameCount+= 1;
+    }
+    else{
+        var ultraMoon = '';
+    }
+    if (req.body.sun == 'sun') {
+        var sun = ' AND Sun NOT IN ("C","E","B","R","S")';
+        gameCount+= 1;
+    }
+    else{
+        var sun = '';
+    }
+    if (req.body.moon == 'moon') {
+        var moon = ' AND Moon NOT IN ("C","E","B","R","S")';
+        gameCount+= 1;
+    }
+    else{
+        var moon = '';
+    }
+    if (req.body.omega_ruby == 'omega_ruby') {
+        var omegaRuby = ' AND OmegaR NOT IN ("C","E","B","R","S")';
+        gameCount+= 1;
+    }
+    else{
+        var omegaRuby = '';
+    }
+    if (req.body.alpha_sapphire == 'alpha_sapphire') {
+        var alphaSapphire = ' AND AlphaS NOT IN ("C","E","B","R","S")';
+        gameCount+= 1;
+    }
+    else{
+        var alphaSapphire = '';
+    }
+    if (req.body.friend_safari == 'friend_safari') {
+        var friendSafari = ' AND FSafari NOT IN ("C", "E", "B")';
+        gameCount+= 1;
+    }
+    else{
+        var friendSafari = '';
+    }
+    if (req.body.x == 'x') {
+        var x = ' AND X NOT IN ("C","E","B","R","S")';
+        gameCount+= 1;
+    }
+    else{
+        var x = '';
+    }
+    if (req.body.y == 'y') {
+        var y = ' AND Y NOT IN ("C","E","B","R","S")';
+        gameCount+= 1;
+    }
+    else{
+        var y = '';
+    }
+    //Check to see if we include Pokemon from the dream_radar in calculation
+    if (req.body.dream_radar == 'dream_radar' && req.body.white_2 == 'white_2') {
+        if (req.body.black_2 == 'black_2') {
+            var black2 = ' AND Black2 NOT IN ("C","E","B","R","S","DR","DRE")';
+            gameCount+= 1;
+        }
+        else{
+            var black2 = '';
+        }
+        if (req.body.white_2 == 'white_2') {
+            var white2 = ' AND White2 NOT IN ("C","E","B","R","S","DR","DRE")';
+            gameCount+= 1;
+        }
+        else{
+            var white2 = '';
+        }
+    }
+    //No Dream Radar in Calculation
+    else {
+        if (req.body.black_2 == 'black_2') {
+            var black2 = ' AND Black2 NOT IN ("C","E","B","R","S")';
+            gameCount+= 1;
+        }
+        else{
+            var black2 = '';
+        }
+        if (req.body.white_2 == 'white_2') {
+            var white2 = ' AND White2 NOT IN ("C","E","B","R","S")';
+            gameCount+= 1;
+        }
+        else{
+            var white2 = '';
+        }
+    }
+    //End of Dream Radar affected games
+    if (req.body.black == 'black') {
+        var black = ' AND Black NOT IN ("C","E","B","R","S")';
+        gameCount+= 1;
+    }
+    else{
+        var black = '';
+    }
+    if (req.body.white == 'white') {
+        var white = ' AND White NOT IN ("C","E","B","R","S")';
+        gameCount+= 1;
+    }
+    else{
+        var white = '';
+    }
+    if (req.body.pokewalker == 'pokewalker') {
+        var pokewalker = ' AND Pokewalker NOT IN ("C","E","B","R","S")';
+        gameCount+= 1;
+    }
+    else{
+        var pokewalker = '';
+    }
+    if (req.body.heartgold == 'heartgold') {
+        var heartGold = ' AND HeartGold NOT IN ("C","E","B","R","S")';
+        gameCount+= 1;
+    }
+    else{
+        var heartGold = '';
+    }
+    if (req.body.soulsilver == 'soulsilver') {
+        var soulSilver = ' AND SoulSilver NOT IN ("C","E","B","R","S")';
+        gameCount+= 1;
+    }
+    else{
+        var soulSilver = '';
+    }
+    //Checking if the dual_slot box was checked. If so include Pokemon that can be caught in dual slot mode in Diamond, Pearl, and Platinum
+    if (req.body.dual_slot = 'dual_slot') {
+        if (req.body.diamond == 'diamond') {
+            var diamond = ' AND Diamond NOT IN ("C","E","B","R","S","D")';
+            gameCount+= 1;
+        }
+        else{
+            var diamond = '';
+        }
+        if (req.body.pearl == 'pearl') {
+            var pearl = ' AND Pearl NOT IN ("C","E","B","R","S","D")';
+            gameCount+= 1;
+        }
+        else{
+            var pearl = '';
+        }
+        if (req.body.platinum == 'platinum') {
+            var platinum = ' AND Platinum NOT IN ("C","E","B","R","S","D")';
+            gameCount+= 1;
+        }
+        else{
+            var platinum = '';
+        }
+    }
+    //Dual slot box not checked
+    else{
+        if (req.body.diamond == 'diamond') {
+            var diamond = ' AND Diamond NOT IN ("C","E","B","R","S")';
+            gameCount+= 1;
+        }
+        else{
+            var diamond = '';
+        }
+        if (req.body.pearl == 'pearl') {
+            var pearl = ' AND Pearl NOT IN ("C","E","B","R","S")';
+            gameCount+= 1;
+        }
+        else{
+            var pearl = '';
+        }
+        if (req.body.platinum == 'platinum') {
+            var platinum = ' AND Platinum NOT IN ("C","E","B","R","S")';
+            gameCount+= 1;
+        }
+        else{
+            var platinum = '';
+        }
+    }
+    //end of dual slot affected games
+    if (req.body.firered == 'firered') {
+        var fireRed = ' AND FireRed NOT IN ("C","E","B","R","S")';
+        gameCount+= 1;
+    }
+    else{
+        var fireRed = '';
+    }
+    if (req.body.leafgreen == 'leafgreen') {
+        var leafGreen = ' AND leafGreen NOT IN ("C","E","B","R","S")';
+        gameCount+= 1;
+    }
+    else{
+        var leafGreen = '';
+    }
+    if (req.body.ruby == 'ruby') {
+        var ruby = ' AND Ruby NOT IN ("C","E","B","R","S")';
+        gameCount+= 1;
+    }
+    else{
+        var ruby = '';
+    }
+    if (req.body.sapphire == 'sapphire') {
+        var sapphire = ' AND Sapphire NOT IN ("C","E","B","R","S")';
+        gameCount+= 1;
+    }
+    else{
+        var sapphire = '';
+    }
+    if (req.body.emerald == 'emerald') {
+        var emerald = ' AND Emerald NOT IN ("C","E","B","R","S")';
+        gameCount+= 1;
+    }
+    else{
+        var emerald = '';
+    }
+    if (req.body.gold == 'gold') {
+        var gold = ' AND Gold NOT IN ("C","E","B","R","S")';
+        gameCount+= 1;
+    }
+    else{
+        var gold = '';
+    }
+    if (req.body.silver == 'silver') {
+        var silver = ' AND Silver NOT IN ("C","E","B","R","S")';
+        gameCount+= 1;
+    }
+    else{
+        var silver = '';
+    }
+    if (req.body.crystal_3DS == 'crystal_3DS') {
+        var crystal3DS = ' AND Crystal3DS NOT IN ("C","E","B","R","S")';
+        gameCount+= 1;
+    }
+    else{
+        var crystal3DS = '';
+    }
+    if (req.body.crystal == 'crystal') {
+        var crystal = ' AND Crystal NOT IN ("C","E","B","R","S")';
+        gameCount+= 1;
+    }
+    else{
+        var crystal = '';
+    }
+    if (req.body.red == 'red') {
+        var red = ' AND Red NOT IN ("C","E","B","R","S")';
+        gameCount+= 1;
+    }
+    else{
+        var red = '';
+    }
+    if (req.body.blue == 'blue') {
+        var blue = ' AND EngBlue NOT IN ("C","E","B","R","S")';
+        gameCount+= 1;
+    }
+    else{
+        var blue = '';
+    }
+    if (req.body.yellow == 'yellow') {
+        var yellow = ' AND Yellow NOT IN ("C","E","B","R","S")';
+        gameCount+= 1;
+    }
+    else{
+        var yellow = '';
+    }
+
+    //Case where user didn't check any of the boxes. Return full list of Pokemon
+    if (gameCount == 0) {
+        var sqlQuery = 'SELECT Id, Name FROM AvPokemon';
+        var sqlCountQuery = 'SELECT COUNT(Id) AS Pokemon_Count FROM AvPokemon';
+    }
+    else{
+        var whereStatement = ultraSun + ultraMoon + sun + moon + omegaRuby + alphaSapphire + friendSafari + x + y + black2 + white2 + black + white + pokewalker + heartGold + soulSilver + diamond + pearl + platinum + fireRed + leafGreen + ruby + sapphire + emerald + gold + silver + crystal3DS + crystal + red + blue + yellow
+        //Need to delete the extra ' AND' so SQL doesn't freak out
+        var newWhereStatement = whereStatement.replace(' AND', '');
+        //Excluding the event only Pokemon
+        var sqlQuery = 'SELECT Id, Name FROM AvPokemon WHERE ' + newWhereStatement + ' AND Id NOT IN (151, 385, 489, 490, 491, 492, 493, 494, 647, 648, 649, 719, 720, 721, 801, 802, 807)';
+        //Including query to count the number of missing Pokemon
+        var sqlCountQuery = 'SELECT COUNT(Id) AS Pokemon_Count FROM AvPokemon WHERE ' + newWhereStatement + 'AND Id NOT IN (151, 385, 489, 490, 491, 492, 493, 494, 647, 648, 649, 719, 720, 721, 801, 802, 807)';
+    }
+    console.log(sqlQuery);
+    console.log(sqlCountQuery)
+    //Now to actually pull the information from the database. 
+    db.all(sqlQuery, function (err,rows) {
+        if (err) {res.send(err.message);}
+        //No error so proceed
+        var Ids = [];
+        for (var i=0; i<rows.length; i++){
+            Ids.push(rows[i].Id);
+        }
+        var Names = [];
+        for (var i=0; i<rows.length; i++){
+            Names.push(rows[i].Name);
+        }
+        var Pokemon = {};
+        Ids.forEach((Id, i) => Pokemon[Id] = Names[i]);
+        //2nd SQL Query for the Count of the missing pokemon
+        db.get(sqlCountQuery, function (err, row){
+            if (err) {res.send(err.message);}
+            //No error so render
+            var pokemonCount = 'You are currently missing: ' + row.Pokemon_Count + ' Pokémon';
+            res.render('missing_pokemon2', {title: 'Pokémon you are not able to catch in game based on your current games', pokemon: Pokemon, pokemon_count: pokemonCount});
+        });
+    })
+};
+
+
+
+
+
+
+
+
+//ATTEMPTING TO MAKE THE RECOMMENDATION Query
+
+ var sqlRecomQuery = 'SELECT SUM(CASE WHEN Red IN ("C","E","B","R","S") THEN 1 ELSE 0 END) AS Red1,\
+        SUM(CASE WHEN EngBlue IN ("C","E","B","R","S") THEN 1 ELSE 0 END) AS Blue1,\ 
+        SUM(CASE WHEN JpBlue IN ("C","E","B","R","S") THEN 1 ELSE 0 END) AS BlueJapan1,\
+        SUM(CASE WHEN Yellow IN ("C","E","B","R","S") THEN 1 ELSE 0 END) AS Yellow1,\
+        SUM(CASE WHEN Gold IN ("C","E","B","R","S") THEN 1 ELSE 0 END) AS Gold1,\
+        SUM(CASE WHEN Silver IN ("C","E","B","R","S") THEN 1 ELSE 0 END) AS Silver1,\
+        SUM(CASE WHEN Crystal IN ("C","E","B","R","S") THEN 1 ELSE 0 END) AS Crystal1,\
+        SUM(CASE WHEN Crystal3DS IN ("C","E","B","R","S") THEN 1 ELSE 0 END) AS Crystal3DS1,\
+        SUM(CASE WHEN Ruby IN ("C","E","B","R","S") THEN 1 ELSE 0 END) AS Ruby1,\
+        SUM(CASE WHEN Sapphire IN ("C","E","B","R","S") THEN 1 ELSE 0 END) AS Sapphire1,\
+        SUM(CASE WHEN FireRed IN ("C","E","B","R","S") THEN 1 ELSE 0 END) AS FireRed1,\
+        SUM(CASE WHEN LeafGreen IN ("C","E","B","R","S") THEN 1 ELSE 0 END) AS LeafGreen1,\
+        SUM(CASE WHEN Emerald IN ("C","E","B","R","S") THEN 1 ELSE 0 END) AS Emerald 1,\
+        SUM(CASE WHEN Diamond IN ("C","E","B","R","S") THEN 1 ELSE 0 END) AS Diamond1,\
+        SUM(CASE WHEN Pearl IN ("C","E","B","R","S") THEN 1 ELSE 0 END) AS Pearl1,\
+        SUM(CASE WHEN Platinum IN ("C","E","B","R","S") THEN 1 ELSE 0 END) AS Platinum1,\
+        SUM(CASE WHEN HeartGold IN ("C","E","B","R","S") THEN 1 ELSE 0 END) AS HeartGold1,\
+        SUM(CASE WHEN SoulSilver IN ("C","E","B","R","S") THEN 1 ELSE 0 END) AS SoulSilver1,\
+        SUM(CASE WHEN Pokewalker IN ("C","E","B","R","S") THEN 1 ELSE 0 END) AS Pokewalker1,\
+        SUM(CASE WHEN Black IN ("C","E","B","R","S") THEN 1 ELSE 0 END) AS Black1,\
+        SUM(CASE WHEN White IN ("C","E","B","R","S") THEN 1 ELSE 0 END) AS White1,\
+        SUM(CASE WHEN Black2 IN ("C","E","B","R","S") THEN 1 ELSE 0 END) AS Black21,\
+        SUM(CASE WHEN White2 IN ("C","E","B","R","S") THEN 1 ELSE 0 END) AS White21,\
+        SUM(CASE WHEN X IN ("C","E","B","R","S") THEN 1 ELSE 0 END) AS X1,\
+        SUM(CASE WHEN Y IN ("C","E","B","R","S") THEN 1 ELSE 0 END) AS Y1,\
+        SUM(CASE WHEN OmegaR IN ("C","E","B","R","S") THEN 1 ELSE 0 END) AS OmegaR1,\
+        SUM(CASE WHEN AlphaS IN ("C","E","B","R","S") THEN 1 ELSE 0 END) AS AlphaS1,\
+        SUM(CASE WHEN FSafari IN ("C","E","B","R","S") THEN 1 ELSE 0 END) AS FSafari1,\
+        SUM(CASE WHEN Sun IN ("C","E","B","R","S") THEN 1 ELSE 0 END) AS Sun1,\
+        SUM(CASE WHEN Moon IN ("C","E","B","R","S") THEN 1 ELSE 0 END) AS Moon1,\
+        SUM(CASE WHEN USun IN ("C","E","B","R","S") THEN 1 ELSE 0 END) AS USun1,\
+        SUM(CASE WHEN UMoon IN ("C","E","B","R","S") THEN 1 ELSE 0 END) AS Umoon1 FROM AvPokemon';
+
+
+
+        var sqlRecQuery = sumWhen + 'Red' + inAs + 'RedC' + sumWhen + 'EngBlue' + inAs + 'EngBlueC' + sumWhen + 'JpBlue' + inAs + 'JpBlueC' + sumWhen + 'Yellow' + inAs + 'YellowC' + sumWhen + 'Gold' + inAs + 'GoldC' + sumWhen + 'Silver' + inAs + 'SilverC' + sumWhen + 'Crystal' + inAs + 'CrystalC' + sumWhen + 'Crystal3DS' + inAs + 'Crystal3DSC' + sumWhen + 'Ruby' + inAs + 'RubyC' + ' FROM AvPokemon';
+    }

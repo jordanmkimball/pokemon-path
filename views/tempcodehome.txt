@@ -1,0 +1,29 @@
+    meta(charset='utf-8')
+    meta(name='viewport', content='width=device-width, initial-scale=1')
+
+
+
+padding: 50px;
+
+
+p Welcome to #{title}
+
+ 
+
+img#pokeball( src= '../images/pokeball.png' alt = 'A Picture of a Pokeball')
+
+ img#pikachuImg(src= '../images/pikachu.png', alt = 'A picture of Pikachu')
+
+ img#gamesImg(src = '../images/games.png', alt = 'Picture of various pokemon games')
+
+
+
+ /*Styling specifically made for the homepage*/ 
+/* DELETE IF NOT USED BEFORE FINAL POSTING*/ 
+
+#index_style {
+  padding: 75 px;
+  background-image: url(../images/all_pokemon_background.png);
+  background-repeat: no-repeat;
+  background-color: azure;
+}
