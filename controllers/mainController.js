@@ -16,7 +16,7 @@ var db = new sqlite3.Database('pokemon.db');
 //Declaring the PostgreSQL database
 const { Pool } = require('pg');
 const pool = new Pool({
-  connectionString: process.env.DATABASE_URL,
+  connectionString: 'postgres://rqlkiotufjxeqb:0e25f74221e45862308077974662f71db82d533f96fb1c0a51c1962c3c9a6024@ec2-54-83-19-244.compute-1.amazonaws.com:5432/d3f76p8j58u7fc',
   ssl: true
 });
 
