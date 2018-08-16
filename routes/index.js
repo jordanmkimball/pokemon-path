@@ -17,7 +17,7 @@ router.get('/', function(req, res, next) {
 router.get('/yourpath', main_controller.yourPathGet);
 
 //POST request for Your Path Page
-router.post('/yourpath', main_controller.yourPathPost);
+router.post('/yourpath', main_controller.yourPathPost2);
 
 //GET request for About page
 router.get('/about', main_controller.about_get);

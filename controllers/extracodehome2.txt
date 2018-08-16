@@ -1,0 +1,20 @@
+exports.db_get = async (req, res) => {
+    try {
+        const client = await pool.connect()
+        const result = await client.query('SELECT Name FROM AvPokemon WHERE id<10');
+        var jsonNames = result.rows;
+        console.log(jsonNames);
+        var Names = [];
+        for (var i=0; i<jsonNames.length; i++){
+            Names.push(jsonNames[i].name);
+        }
+        console.log(jsonNames.length);
+        console.log(jsonNames[0].name);
+        console.log(Names);
+        res.render('avail_usun', {query_result: Names});
+        client.release();
+      } catch (err) {
+        console.error(err);
+        res.send("Error " + err);
+      }
+    };
