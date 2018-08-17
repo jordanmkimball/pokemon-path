@@ -9,10 +9,6 @@ app.use(bodyParser.urlencoded({extended: true}));
 //Code to use async
 var async = require('async');
 
-//Declaring the sqlite3 database
-var sqlite3 = require('sqlite3').verbose();
-var db = new sqlite3.Database('pokemon.db');
-
 //Declaring the PostgreSQL database
 const { Pool } = require('pg');
 const pool = new Pool({
@@ -22,7 +18,7 @@ const pool = new Pool({
 
 
 //My own custom module to decode the availability letters.
-var ad = require('./availabilityDecoder');
+var ad = require('../my_modules/availabilityDecoder');
 
 
 //START OF GET REQUEST FUNCTIONS

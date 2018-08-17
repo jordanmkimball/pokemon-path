@@ -5,8 +5,6 @@ var cookieParser = require('cookie-parser');
 var logger = require('morgan');
 var favicon = require('serve-favicon');
 var bodyParser = require('body-parser');
-//Attempting to get app to use sqlite3
-var sqlite3 = require('sqlite3');
 //Require both the compression and helmet modules
 var compression = require('compression');
 var helmet = require('helmet');
