@@ -17,7 +17,7 @@ router.get('/', function(req, res, next) {
 router.get('/yourpath', main_controller.yourPathGet);
 
 //POST request for Your Path Page
-router.post('/yourpath', main_controller.yourPathPost2);
+router.post('/yourpath', main_controller.yourPathPost);
 
 //GET request for About page
 router.get('/about', main_controller.about_get);
@@ -31,8 +31,6 @@ router.get('/newplayers', main_controller.new_get);
 //GET request for 1 pokemon by id
 router.get('/search/:id', main_controller.pokemon_id_search);
 
-//EXPERIMENTAL PAGE
-router.get('/db', main_controller.db_get);
 
 
 module.exports = router;
