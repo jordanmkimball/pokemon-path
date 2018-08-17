@@ -443,87 +443,81 @@ exports.yourPathPost = async (req, res, next) => {
 
 
 
-
-
-
-
-
-
 //Display information about a single pokemon by id
-exports.pokemon_id_search = function (req, res, next){
+exports.pokemon_id_search = async (req, res, next) => {
     console.log("Return pokemon with Id: " + req.params.id);
-    var sqlStatement = 'SELECT Id, Name, USun, UMoon, Sun, Moon, OmegaR, AlphaS, FSafari, X, Y, White2, Black2, White, Black, Pokewalker, SoulSilver, HeartGold, Platinum, Pearl, Diamond, Emerald, LeafGreen, FireRed, Sapphire, Ruby, Crystal3DS, Crystal, Silver, Gold, Yellow, JpBlue, EngBlue, Red FROM AvPokemon WHERE id = ?';
-    db.get(sqlStatement, [req.params.id], function (err, row) {
-        if (err) { res.send(err.message); }
-        //No error so render. 
-        else{
-            var pokedexNumber = row.Id;
-            var pokemonName = row.Name;
-            //Using the custom availabilityDecoder Module and its functions
-            var UltraSun = ad.availabilityDecoder(row.USun);
-            var UltraSunMethod = ad.availabilityMethod(row.USun);
-            var UltraMoon = ad.availabilityDecoder(row.UMoon);
-            var UltraMoonMethod = ad.availabilityMethod(row.UMoon);
-            var Sun = ad.availabilityDecoder(row.Sun);
-            var SunMethod = ad.availabilityMethod(row.Sun);
-            var Moon = ad.availabilityDecoder(row.Moon);
-            var MoonMethod = ad.availabilityMethod(row.Moon);
-            var AlphaSapphire = ad.availabilityDecoder(row.AlphaS);
-            var AlphaSapphireMethod = ad.availabilityMethod(row.AlphaS);
-            var OmegaRuby = ad.availabilityDecoder(row.OmegaR);
-            var OmegaRubyMethod = ad.availabilityMethod(row.OmegaR);
-            var FriendSafari = ad.availabilityDecoder(row.FSafari);
-            var FriendSafariMethod = ad.availabilityMethod(row.FSafari);
-            var X = ad.availabilityDecoder(row.X);
-            var XMethod = ad.availabilityMethod(row.X);
-            var Y = ad.availabilityDecoder(row.Y);
-            var YMethod = ad.availabilityMethod(row.Y);
-            var Black2 = ad.availabilityDecoder(row.Black2);
-            var Black2Method = ad.availabilityMethod(row.Black2);
-            var White2 = ad.availabilityDecoder(row.White2);
-            var White2Method = ad.availabilityMethod(row.White2);
-            var Black = ad.availabilityDecoder(row.Black);
-            var BlackMethod = ad.availabilityMethod(row.Black);
-            var White = ad.availabilityDecoder(row.White);
-            var WhiteMethod = ad.availabilityMethod(row.White);
-            var HeartGold = ad.availabilityDecoder(row.HeartGold);
-            var HeartGoldMethod = ad.availabilityMethod(row.HeartGold);
-            var SoulSilver = ad.availabilityDecoder(row.SoulSilver);
-            var SoulSilverMethod = ad.availabilityMethod(row.SoulSilver);
-            var Pokewalker = ad.availabilityDecoder(row.Pokewalker);
-            var PokewalkerMethod = ad.availabilityMethod(row.Pokewalker);
-            var Diamond = ad.availabilityDecoder(row.Diamond);
-            var DiamondMethod = ad.availabilityMethod(row.Diamond);
-            var Pearl = ad.availabilityDecoder(row.Pearl);
-            var PearlMethod = ad.availabilityMethod(row.Pearl);
-            var Platinum = ad.availabilityDecoder(row.Platinum);
-            var PlatinumMethod = ad.availabilityMethod(row.Platinum);
-            var FireRed = ad.availabilityDecoder(row.FireRed);
-            var FireRedMethod = ad.availabilityMethod(row.FireRed);
-            var LeafGreen = ad.availabilityDecoder(row.LeafGreen);
-            var LeafGreenMethod = ad.availabilityMethod(row.LeafGreen);
-            var Ruby = ad.availabilityDecoder(row.Ruby);
-            var RubyMethod = ad.availabilityMethod(row.Ruby);
-            var Sapphire = ad.availabilityDecoder(row.Sapphire);
-            var SapphireMethod = ad.availabilityMethod(row.Sapphire);
-            var Emerald = ad.availabilityDecoder(row.Emerald);
-            var EmeraldMethod = ad.availabilityMethod(row.Emerald);
-            var Gold = ad.availabilityDecoder(row.Gold);
-            var GoldMethod = ad.availabilityMethod(row.Gold);
-            var Silver = ad.availabilityDecoder(row.Silver);
-            var SilverMethod = ad.availabilityMethod(row.Silver);
-            var Crystal3DS = ad.availabilityDecoder(row.Crystal3DS);
-            var Crystal3DSMethod = ad.availabilityMethod(row.Crystal3DS);
-            var Crystal = ad.availabilityDecoder(row.Crystal);
-            var CrystalMethod = ad.availabilityMethod(row.Crystal);
-            var Red = ad.availabilityDecoder(row.Red);
-            var RedMethod = ad.availabilityMethod(row.Red);
-            var Blue = ad.availabilityDecoder(row.EngBlue);
-            var BlueMethod = ad.availabilityMethod(row.EngBlue);
-            var Yellow = ad.availabilityDecoder(row.Yellow);
-            var YellowMethod = ad.availabilityMethod(row.Yellow);
-
-            res.render('pokemon_id_search', {title: 'Pokémon Availability Details', pokemon_id: pokedexNumber, pokemon_name: pokemonName, 
+    var useId = req.params.id;
+    var sqlStatement = 'SELECT Id, Name, USun, UMoon, Sun, Moon, OmegaR, AlphaS, FSafari, X, Y, White2, Black2, White, Black, Pokewalker, SoulSilver, HeartGold, Platinum, Pearl, Diamond, Emerald, LeafGreen, FireRed, Sapphire, Ruby, Crystal3DS, Crystal, Silver, Gold, Yellow, JpBlue, EngBlue, Red FROM AvPokemon WHERE id =' + useId;
+    try {
+        const client = await pool.connect();
+        const result = await client.query(sqlStatement);
+        var jsonResult = result.rows;
+        var pokedexNumber = jsonResult[0].id;
+        var pokemonName = jsonResult[0].name;
+        //Using the custom availabilityDecoder Module and its functions
+        var UltraSun = ad.availabilityDecoder(jsonResult[0].usun);
+        var UltraSunMethod = ad.availabilityMethod(jsonResult[0].usun);
+        var UltraMoon = ad.availabilityDecoder(jsonResult[0].umoon);
+        var UltraMoonMethod = ad.availabilityMethod(jsonResult[0].umoon);
+        var Sun = ad.availabilityDecoder(jsonResult[0].sun);
+        var SunMethod = ad.availabilityMethod(jsonResult[0].sun);
+        var Moon = ad.availabilityDecoder(jsonResult[0].moon);
+        var MoonMethod = ad.availabilityMethod(jsonResult[0].moon);
+        var AlphaSapphire = ad.availabilityDecoder(jsonResult[0].alphas);
+        var AlphaSapphireMethod = ad.availabilityMethod(jsonResult[0].alphas);
+        var OmegaRuby = ad.availabilityDecoder(jsonResult[0].omegar);
+        var OmegaRubyMethod = ad.availabilityMethod(jsonResult[0].omegar);
+        var FriendSafari = ad.availabilityDecoder(jsonResult[0].fsafari);
+        var FriendSafariMethod = ad.availabilityMethod(jsonResult[0].fsafari);
+        var X = ad.availabilityDecoder(jsonResult[0].x);
+        var XMethod = ad.availabilityMethod(jsonResult[0].x);
+        var Y = ad.availabilityDecoder(jsonResult[0].y);
+        var YMethod = ad.availabilityMethod(jsonResult[0].y);
+        var Black2 = ad.availabilityDecoder(jsonResult[0].black2);
+        var Black2Method = ad.availabilityMethod(jsonResult[0].black2);
+        var White2 = ad.availabilityDecoder(jsonResult[0].white2);
+        var White2Method = ad.availabilityMethod(jsonResult[0].white2);
+        var Black = ad.availabilityDecoder(jsonResult[0].black);
+        var BlackMethod = ad.availabilityMethod(jsonResult[0].black);
+        var White = ad.availabilityDecoder(jsonResult[0].white);
+        var WhiteMethod = ad.availabilityMethod(jsonResult[0].white);
+        var HeartGold = ad.availabilityDecoder(jsonResult[0].heartgold);
+        var HeartGoldMethod = ad.availabilityMethod(jsonResult[0].heartgold);
+        var SoulSilver = ad.availabilityDecoder(jsonResult[0].soulsilver);
+        var SoulSilverMethod = ad.availabilityMethod(jsonResult[0].soulsilver);
+        var Pokewalker = ad.availabilityDecoder(jsonResult[0].pokewalker);
+        var PokewalkerMethod = ad.availabilityMethod(jsonResult[0].pokewalker);
+        var Diamond = ad.availabilityDecoder(jsonResult[0].diamond);
+        var DiamondMethod = ad.availabilityMethod(jsonResult[0].diamond);
+        var Pearl = ad.availabilityDecoder(jsonResult[0].pearl);
+        var PearlMethod = ad.availabilityMethod(jsonResult[0].pearl);
+        var Platinum = ad.availabilityDecoder(jsonResult[0].platinum);
+        var PlatinumMethod = ad.availabilityMethod(jsonResult[0].platinum);
+        var FireRed = ad.availabilityDecoder(jsonResult[0].firered);
+        var FireRedMethod = ad.availabilityMethod(jsonResult[0].firered);
+        var LeafGreen = ad.availabilityDecoder(jsonResult[0].leafgreen);
+        var LeafGreenMethod = ad.availabilityMethod(jsonResult[0].leafgreen);
+        var Ruby = ad.availabilityDecoder(jsonResult[0].ruby);
+        var RubyMethod = ad.availabilityMethod(jsonResult[0].ruby);
+        var Sapphire = ad.availabilityDecoder(jsonResult[0].sapphire);
+        var SapphireMethod = ad.availabilityMethod(jsonResult[0].sapphire);
+        var Emerald = ad.availabilityDecoder(jsonResult[0].emerald);
+        var EmeraldMethod = ad.availabilityMethod(jsonResult[0].emerald);
+        var Gold = ad.availabilityDecoder(jsonResult[0].gold);
+        var GoldMethod = ad.availabilityMethod(jsonResult[0].gold);
+        var Silver = ad.availabilityDecoder(jsonResult[0].silver);
+        var SilverMethod = ad.availabilityMethod(jsonResult[0].silver);
+        var Crystal3DS = ad.availabilityDecoder(jsonResult[0].crystal3ds);
+        var Crystal3DSMethod = ad.availabilityMethod(jsonResult[0].crystal3ds);
+        var Crystal = ad.availabilityDecoder(jsonResult[0].crystal);
+        var CrystalMethod = ad.availabilityMethod(jsonResult[0].crystal);
+        var Red = ad.availabilityDecoder(jsonResult[0].red);
+        var RedMethod = ad.availabilityMethod(jsonResult[0].red);
+        var Blue = ad.availabilityDecoder(jsonResult[0].engblue);
+        var BlueMethod = ad.availabilityMethod(jsonResult[0].engblue);
+        var Yellow = ad.availabilityDecoder(jsonResult[0].yellow);
+        var YellowMethod = ad.availabilityMethod(jsonResult[0].yellow);
+        res.render('pokemon_id_search', {title: 'Pokémon Availability Details', pokemon_id: pokedexNumber, pokemon_name: pokemonName, 
             ultra_sun: UltraSun, ultra_sun_method: UltraSunMethod, ultra_moon: UltraMoon, ultra_moon_method: UltraMoonMethod, sun: Sun, sun_method: SunMethod, 
             moon: Moon, moon_method: MoonMethod, alpha_sapphire: AlphaSapphire, alpha_sapphire_method: AlphaSapphireMethod, 
             omega_ruby: OmegaRuby, omega_ruby_method: OmegaRubyMethod, friend_safari: FriendSafari, friend_safari_method: FriendSafariMethod, 
@@ -535,8 +529,10 @@ exports.pokemon_id_search = function (req, res, next){
             ruby: Ruby, ruby_method: RubyMethod, sapphire: Sapphire, sapphire_method: SapphireMethod, emerald: Emerald, emerald_method: EmeraldMethod, 
             crystal3ds: Crystal3DS, crystal3ds_method: Crystal3DSMethod, crystal: Crystal, crystal_method: CrystalMethod, 
             gold: Gold, gold_method: GoldMethod, silver: Silver, silver_method: SilverMethod, red: Red, red_method: RedMethod, 
-            blue: Blue, blue_method: BlueMethod, yellow: Yellow, yellow_method: YellowMethod
-        });
-        }
-    });
+            blue: Blue, blue_method: BlueMethod, yellow: Yellow, yellow_method: YellowMethod});
+        client.release();
+      } catch (err) {
+        console.error(err);
+        res.send("Error " + err);
+      }
 };
