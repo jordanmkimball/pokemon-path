@@ -46,7 +46,7 @@ exports.yourPathGet = function (req, res, next){
  
 
 //For Your Path Page: Display game recommendations, number, and list of missing Pokemon on POST
-exports.yourPathPost2 = async (req, res, next) => {
+exports.yourPathPost = async (req, res, next) => {
     //Game count necessary in case user didn't select any boxes
     var gameCount = 0;
     //Seeing whether the user checked the Ultra Sun Box
