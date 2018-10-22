@@ -368,7 +368,7 @@ exports.yourPathPost = async (req, res, next) => {
         for (var i=0; i<jsonResult.length; i++){
             Ids.push(jsonResult[i].id);
         }
-        //Creating the Pokemon Object so in can be iterated through on my Pug View
+        //Creating the Pokemon Object so it can be iterated through on my Pug View
         var Pokemon = {};
         Ids.forEach((Id, i) => Pokemon[Id] = Names[i]);
         client.release();
