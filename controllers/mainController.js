@@ -194,7 +194,7 @@ exports.yourPathPost = async (req, res, next) => {
         var soulSilver = '';
     }
     //Checking if the dual_slot box was checked. If so include Pokemon that can be caught in dual slot mode in Diamond, Pearl, and Platinum
-    if (req.body.dual_slot = 'dual_slot') {
+    if (req.body.dual_slot == 'dual_slot') {
         if (req.body.diamond == 'diamond') {
             var diamond = " AND Diamond NOT IN ('C','E','B','R','S','D')";
             gameCount+= 1;
