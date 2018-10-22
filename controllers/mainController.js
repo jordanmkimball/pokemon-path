@@ -48,7 +48,6 @@ exports.yourPathPost = async (req, res, next) => {
     //Seeing whether the user checked the Ultra Sun Box
     if (req.body.ultra_sun == 'ultra_sun') {
         var ultraSun = " AND USun NOT IN ('C','E','B','R','S')";
-        //ultraSun2 is the variable that will determine if the game shows up in the game recommendations
         var ultraSunBox = 'checked';
         gameCount+= 1;
     }
@@ -350,7 +349,7 @@ exports.yourPathPost = async (req, res, next) => {
         //Including query to count the number of missing Pokemon
         var sqlCountQuery = 'SELECT COUNT(Id) AS Pokemon_Count FROM AvPokemon WHERE ' + newWhereStatement + ' AND Id NOT IN (151, 385, 489, 490, 491, 492, 493, 494, 647, 648, 649, 719, 720, 721, 801, 802, 807)';
         var sqlRecQuery = 'SELECT ' + sumWhen + 'USun' + inAs + 'USunR,' + sumWhen + 'UMoon' + inAs + 'UMoonR,' + sumWhen + 'OmegaR' + inAs + 'OmegaRR,' + sumWhen + 'AlphaS' + inAs + 'AlphaSR,' + sumWhen + 'X' + inAs + 'XR,' + sumWhen + 'Y' + inAs + 'YR,' +  sumWhen + 'Crystal3DS' + inAs + 'Crystal3DSR ' + 'FROM AvPokemon WHERE ' + newWhereStatement;
-        var sqlEventQuery = 'SELECT Id, Name FROM AvPokemon WHERE Id IN (151, 385, 489, 490, 491, 492, 493, 494, 647, 648, 649, 719, 720, 721, 802)'
+        var sqlEventQuery = 'SELECT Id, Name FROM AvPokemon WHERE Id IN (151, 385, 489, 490, 491, 492, 493, 494, 647, 648, 649, 719, 720, 721, 802, 807)'
     }
     //Now to actually pull the information from the database.
     //The missing pokemon Query 
