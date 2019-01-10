@@ -1,6 +1,7 @@
 exports.availabilityDecoder = function(letter) {
-    if (letter == 'C' || letter == 'E' || letter == 'B' || letter == 'R' || letter == 'S' || letter == 'D'){var obtainableInGame = 'Yes';}
-
+    if (letter == 'C' || letter == 'E' || letter == 'B' || letter == 'R' || letter == 'S' || letter == 'D'){
+        var obtainableInGame = 'Yes';
+    }
     else{
         var obtainableInGame = 'no';
     }

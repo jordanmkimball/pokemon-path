@@ -5,7 +5,6 @@ var app = express();
 var bodyParser = require('body-parser');
 app.use(bodyParser.urlencoded({extended: true}));
 
-
 //Code to use async
 var async = require('async');
 
@@ -16,13 +15,13 @@ const pool = new Pool({
   ssl: true
 });
 
-
 //My own custom module to decode the availability letters.
 var ad = require('../my_modules/availabilityDecoder');
+//My own custom module to create the queries for the pokemon database
+var pokemonQueryBuilder = require('../my_modules/pokemonQueryBuilder');
 
 
 //START OF GET REQUEST FUNCTIONS
-
 
 
 //Display About Page on GET
@@ -42,7 +41,7 @@ exports.yourPathGet = function (req, res, next){
  
 
 //For Your Path Page: Display game recommendations, number, and list of missing Pokemon on POST
-exports.yourPathPost = async (req, res, next) => {
+/*exports.yourPathPost = async (req, res, next) => {
     //Game count necessary in case user didn't select any boxes
     var gameCount = 0;
     //Seeing whether the user checked the Ultra Sun Box
@@ -434,6 +433,193 @@ exports.yourPathPost = async (req, res, next) => {
         res.send("Error " + err);
       }
 };
+*/
+
+//TO-DO: Test exports.yourPathPost
+exports.yourPathPost = async (req, res, next) => {
+    var gameCount = 0;
+    var checkedUltraSun = false;
+    var checkedUltraMoon = false;
+    var checkedSun = false;
+    var checkedMoon = false;
+    var checkedOmegaRuby = false;
+    var checkedAlphaSapphire = false;
+    var checkedX = false;
+    var checkedY = false;
+    var checkedBlack2 = false;
+    var checkedWhite2 = false;
+    var checkedWhite = false;
+    var checkedBlack = false;
+    var checkedHeartGold = false;
+    var checkedSoulSilver = false;
+    var checkedDiamond = false;
+    var checkedPearl = false;
+    var checkedPlatinum = false;
+    var checkedFireRed = false;
+    var checkedLeafGreen = false;
+    var checkedRuby = false;
+    var checkedSapphire = false;
+    var checkedEmerald = false;
+    var checkedGold = false;
+    var checkedSilver = false;
+    var checkedCrystal3DS = false;
+    var checkedCrystalGameboy = false;
+    var checkedRed = false;
+    var checkedBlue = false;
+    var checkedYellow = false;
+    var checkedFriendSafari = false;
+    var checkedDreamRadar = false;
+    var checkedPokewalker = false;
+    var checkedDualSlot = false;
+    //Determine which boxes the user checked
+    //Games
+    if (req.body.ultra_sun == 'ultra_sun'){
+        checkedUltraSun = true;
+        gameCount++;
+    }
+    if (req.body.ultraMoon == 'ultra_moon'){
+        checkedUltraMoon = true;
+        gameCount++;
+    }
+    if (req.body.sun == 'sun'){
+        checkedSun = true;
+        gameCount++;
+    }
+    if (req.body.moon == 'moon'){
+        checkedMoon = true;
+        gameCount++;
+    }
+    if (req.body.omega_ruby == 'omega_ruby'){
+        checkedOmegaRuby = true;
+        gameCount++;
+    }
+    if (req.body.alpha_sapphire == 'alpha_sapphire'){
+        checkedAlphaSapphire = true;
+        gameCount++;
+    }
+    if (req.body.x == 'x'){
+        checkedX = true;
+        gameCount++;
+    }
+    if (req.body.y){
+        checkdedY = true;
+        gameCount++;
+    }
+    if (req.body.black_2 == 'black_2'){
+        checkedBlack2 = true;
+        gameCount++;
+    }
+    if (req.body.white_2 == 'white_2'){
+        checkedWhite2 = true;
+        gameCount++;
+    }
+    if (req.body.black == 'black'){
+        checkedBlack = true;
+        gameCount++;
+    }
+    if (req.body.white == 'white'){
+        checkedWhite = true;
+        gameCount++;
+    }
+    if (req.body.heartgold == 'heartgold'){
+        checkedHeartGold = true;
+        gameCount++;
+    }
+    if (req.body.soulsilver == 'soulsilver'){
+        checkedSoulSilver = true;
+        gameCount++;
+    }
+    if (req.body.pearl == 'pearl'){
+        checkedPearl = true;
+        gameCount++;
+    }
+    if (req.body.platinum == 'platinum'){
+        checkedPlatinum = true;
+        gameCount++;
+    }
+    if (req.body.diamond == 'diamond'){
+        checkedDiamond = true;
+        gameCount++;
+    }
+    if (req.body.firered == 'firered'){
+        checkedFireRed = true;
+        gameCount++;
+    }
+    if (req.body.leafgreen == 'leafgreen'){
+        checkedLeafGreen = true;
+        gameCount++;
+    }
+    if (req.body.ruby == 'ruby'){
+        checkedRuby = true;
+        gameCount++;
+    }
+    if (req.body.sapphire == 'sapphire'){
+        checkedSapphire = true;
+        gameCount++;
+    }
+    if (req.body.emerald == 'emerald'){
+        checkedEmerald = true;
+        gameCount++;
+    }
+    if (req.body.gold == 'gold'){
+        checkedGold = true;
+        gameCount++;
+    }
+    if (req.body.silver == 'silver'){
+        checkdedSilver = true;
+        gameCount++;
+    }
+    if (req.body.crystal_3DS == 'crystal_3DS'){
+        checkedCrystal3DS = true;
+        gameCount++;
+    }
+    if (req.body.crystal == 'crystal'){
+        checkedCrystalGameboy = true;
+        gameCount++;
+    }
+    if (req.body.red == 'red'){
+        checkedRed = true;
+        gameCount++;
+    }
+    if (req.body.blue == 'blue'){
+        checkedBlue = true;
+        gameCount++;
+    }
+    if (req.body.yellow == 'yellow'){
+        checkedYellow = true;
+        gameCount++;
+    }
+    //Find out which additional options boxes are checked
+    if (req.body.friend_safari == 'friend_safari'){
+        checkedFriendSafari = true;
+    }
+    if (req.body.dream_radar == 'dream_radar'){
+        checkedDreamRadar = true;
+    }
+    if (req.body.pokewalker == 'pokewalker'){
+        checkedPokewalker = true;
+    }
+    if (req.body.dual_slot == 'dual_slot'){
+        checkedDualSlot = true;
+    }
+    var numberPokemonMissingQuery = pokemonQueryBuilder.missingPokemonCountQuery(checkedUltraSun, checkedUltraMoon, checkedSun, checkedMoon, checkedOmegaRuby, checkedAlphaSapphire, checkedX, checkedY, checkedBlack2, checkedWhite2, checkedBlack, checkedWhite, checkedHeartGold, checkedSoulSilver, checkedDiamond, checkedPearl, checkedPlatinum, checkedFireRed, checkedLeafGreen, checkedRuby, checkedEmerald, checkedGold, checkedSilver, checkedCrystal3DS, checkedCrystalGameboy, checkedRed, checkedBlue, checkedYellow, checkedFriendSafari, checkedDreamRadar, checkedPokewalker, checkedDualSlot, gameCount);
+    //The Pokemon Count Query
+    try {
+        const client = await pool.connect();
+        const result = await client.query(numberPokemonMissingQuery);
+        var jsonResult = result.rows;
+        var pokemonCount = jsonResult[0].pokemon_count;
+        console.log(pokemonCount);
+        client.release();
+      } catch (err) {
+        console.error(err);
+        res.send("Error " + err);
+      }
+
+    
+
+}
+
 
 
 
@@ -531,3 +717,4 @@ exports.pokemon_id_search = async (req, res, next) => {
         res.send("Error " + err);
       }
 };
+
