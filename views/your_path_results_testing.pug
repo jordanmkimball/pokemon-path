@@ -1,0 +1,15 @@
+extends layout
+
+block content
+  div.maintext 
+    h1.underline= title
+
+    if pokemon_count > 0
+      p.results Based on the games you selected you are #[em able] to obtain <span class= 'bold'> #{total_pokemon - event_only_pokemon_total - pokemon_count} </span> out of #{total_pokemon} total Pokémon
+      p.results You are #[em unable] to obtain <span class='bold'> #{pokemon_count} </span> Pokémon through in-game means, that can be obtained in other games.
+      p.results Additionally there are currently #{event_only_pokemon_total} event only Pokémon that cannot be obtained outside of official Nintendo events.
+
+      
+    else
+      h3 Congratulations! You are currently able to catch all Pokémon in-game, that are not one of the #{event_only_pokemon_total} event only Pokémon.
+      img#happyPikachu(src='../images/happy_pikachu.png', alt = 'A picture of a happy Pikachu with hearts')

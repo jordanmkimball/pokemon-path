@@ -19,6 +19,8 @@ const pool = new Pool({
 var ad = require('../my_modules/availabilityDecoder');
 //My own custom module to create the queries for the pokemon database
 var pokemonQueryBuilder = require('../my_modules/pokemonQueryBuilder');
+//My own custom module that contains a list of constants that can all be changed from one convenient location
+var constants = require('../my_modules/constants')
 
 
 //START OF GET REQUEST FUNCTIONS
@@ -436,8 +438,11 @@ exports.yourPathGet = function (req, res, next){
 */
 
 //TO-DO: Test exports.yourPathPost
+//TO-DO: Add rest of queries. 
 exports.yourPathPost = async (req, res, next) => {
+    //The gameCount lets us know how many boxes the user checks in case they don't check any boxes
     var gameCount = 0;
+    //We start out assuming that all the boxes are unchecked.
     var checkedUltraSun = false;
     var checkedUltraMoon = false;
     var checkedSun = false;
@@ -471,7 +476,7 @@ exports.yourPathPost = async (req, res, next) => {
     var checkedDreamRadar = false;
     var checkedPokewalker = false;
     var checkedDualSlot = false;
-    //Determine which boxes the user checked
+    //Determine which boxes the user checked and switch them to 'true'
     //Games
     if (req.body.ultra_sun == 'ultra_sun'){
         checkedUltraSun = true;
@@ -502,7 +507,7 @@ exports.yourPathPost = async (req, res, next) => {
         gameCount++;
     }
     if (req.body.y){
-        checkdedY = true;
+        checkedY = true;
         gameCount++;
     }
     if (req.body.black_2 == 'black_2'){
@@ -602,11 +607,14 @@ exports.yourPathPost = async (req, res, next) => {
     if (req.body.dual_slot == 'dual_slot'){
         checkedDualSlot = true;
     }
-    var numberPokemonMissingQuery = pokemonQueryBuilder.missingPokemonCountQuery(checkedUltraSun, checkedUltraMoon, checkedSun, checkedMoon, checkedOmegaRuby, checkedAlphaSapphire, checkedX, checkedY, checkedBlack2, checkedWhite2, checkedBlack, checkedWhite, checkedHeartGold, checkedSoulSilver, checkedDiamond, checkedPearl, checkedPlatinum, checkedFireRed, checkedLeafGreen, checkedRuby, checkedEmerald, checkedGold, checkedSilver, checkedCrystal3DS, checkedCrystalGameboy, checkedRed, checkedBlue, checkedYellow, checkedFriendSafari, checkedDreamRadar, checkedPokewalker, checkedDualSlot, gameCount);
-    //The Pokemon Count Query
+    //Use the custom pokemonQueryBuilder Module to create the query that will determine how many pokemon the user will be missing based on the games they have. 
+    var findMissingPokemonCountQuery = pokemonQueryBuilder.missingPokemonCountQuery(checkedUltraSun, checkedUltraMoon, checkedSun, checkedMoon, checkedOmegaRuby, checkedAlphaSapphire, checkedX, checkedY, checkedBlack2, checkedWhite2, checkedBlack, checkedWhite, checkedHeartGold, checkedSoulSilver, checkedDiamond, checkedPearl, checkedPlatinum, checkedFireRed, checkedLeafGreen, checkedRuby, checkedSapphire, checkedEmerald, checkedGold, checkedSilver, checkedCrystal3DS, checkedCrystalGameboy, checkedRed, checkedBlue, checkedYellow, checkedFriendSafari, checkedDreamRadar, checkedPokewalker, checkedDualSlot, gameCount);
+    //Running the missingPokemonCountQuery
     try {
         const client = await pool.connect();
-        const result = await client.query(numberPokemonMissingQuery);
+        //Testing use of constants
+        console.log(findMissingPokemonCountQuery)
+        const result = await client.query(findMissingPokemonCountQuery);
         var jsonResult = result.rows;
         var pokemonCount = jsonResult[0].pokemon_count;
         console.log(pokemonCount);
@@ -615,6 +623,14 @@ exports.yourPathPost = async (req, res, next) => {
         console.error(err);
         res.send("Error " + err);
       }
+
+      //RENDERING THE ACTUAL PAGE
+            //loading some of the constants that will be used on the page
+            var totalPokemon = constants.totalPokemon();
+            var eventOnlyPokemonTotal = constants.eventOnlyPokemonCount();
+            res.render('your_path_results_testing', {title: "Your Path to Catch'em All", pokemon_count: pokemonCount, event_only_pokemon_total: eventOnlyPokemonTotal, total_pokemon: totalPokemon});
+            
+
 
     
 

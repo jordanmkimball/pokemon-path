@@ -4,7 +4,7 @@ var constants = require('./constants');
     //We know the games they currently have Based on which boxes they check in the your_path page.
     //IMPORTANT NOTE: IN Node.js when creating SQL Queries column names ARE CASE SENSITIVE unlike regular SQL.
 //Creates the SQL WHERE Statement that is used in multiple different Queries from the Pokemon Database
-function whereStatement(checkedUltraSun, checkedUltraMoon, checkedSun, checkedMoon, checkedOmegaRuby, checkedAlphaSapphire, checkedX, checkedY, checkedBlack2, checkedWhite2, checkedBlack, checkedWhite, checkedHeartGold, checkedSoulSilver, checkedDiamond, checkedPearl, checkedPlatinum, checkedFireRed, checkedLeafGreen, checkedRuby, checkedEmerald, checkedGold, checkedSilver, checkedCrystal3DS, checkedCrystalGameboy, checkedRed, checkedBlue, checkedYellow, checkedFriendSafari, checkedDreamRadar, checkedPokewalker, checkedDualSlot){
+function whereStatement(checkedUltraSun, checkedUltraMoon, checkedSun, checkedMoon, checkedOmegaRuby, checkedAlphaSapphire, checkedX, checkedY, checkedBlack2, checkedWhite2, checkedBlack, checkedWhite, checkedHeartGold, checkedSoulSilver, checkedDiamond, checkedPearl, checkedPlatinum, checkedFireRed, checkedLeafGreen, checkedRuby, checkedSapphire, checkedEmerald, checkedGold, checkedSilver, checkedCrystal3DS, checkedCrystalGameboy, checkedRed, checkedBlue, checkedYellow, checkedFriendSafari, checkedDreamRadar, checkedPokewalker, checkedDualSlot){
     var ultraSun = '';
     var ultraMoon = '';
     var sun = '';
@@ -143,7 +143,7 @@ function whereStatement(checkedUltraSun, checkedUltraMoon, checkedSun, checkedMo
     if(checkedCrystal3DS){
         crystal3DS = " AND Crystal3DS NOT IN ('C','E','B','R','S')";
     }
-    if(checkedCrystal){
+    if(checkedCrystalGameboy){
         crystal = " AND Crystal NOT IN ('C','E','B','R','S')";
     }
     if(checkedRed){
@@ -171,15 +171,16 @@ function whereStatement(checkedUltraSun, checkedUltraMoon, checkedSun, checkedMo
 
 
 
-//Finds how many pokemon a player is unable to catch given the games they currently own
-exports.missingPokemonCountQuery = function(checkedUltraSun, checkedUltraMoon, checkedSun, checkedMoon, checkedOmegaRuby, checkedAlphaSapphire, checkedX, checkedY, checkedBlack2, checkedWhite2, checkedBlack, checkedWhite, checkedHeartGold, checkedSoulSilver, checkedDiamond, checkedPearl, checkedPlatinum, checkedFireRed, checkedLeafGreen, checkedRuby, checkedEmerald, checkedGold, checkedSilver, checkedCrystal3DS, checkedCrystalGameboy, checkedRed, checkedBlue, checkedYellow, checkedFriendSafari, checkedDreamRadar, checkedPokewalker, checkedDualSlot, gameCount){
+//Returns a SQL Query to determine how many pokemon a player is unable to catch given the games they currently own
+exports.missingPokemonCountQuery = function(checkedUltraSun, checkedUltraMoon, checkedSun, checkedMoon, checkedOmegaRuby, checkedAlphaSapphire, checkedX, checkedY, checkedBlack2, checkedWhite2, checkedBlack, checkedWhite, checkedHeartGold, checkedSoulSilver, checkedDiamond, checkedPearl, checkedPlatinum, checkedFireRed, checkedLeafGreen, checkedRuby, checkedSapphire, checkedEmerald, checkedGold, checkedSilver, checkedCrystal3DS, checkedCrystalGameboy, checkedRed, checkedBlue, checkedYellow, checkedFriendSafari, checkedDreamRadar, checkedPokewalker, checkedDualSlot, gameCount){
     //Case when none of the Game boxes are checked
     if(gameCount == 0){
-        return 'SELECT COUNT(Id) AS Pokemon_Count FROM AvPokemon WHERE Id NOT IN (' + constants.eventOnlyPokemonIdsToString + ')';
+        return 'SELECT COUNT(Id) AS Pokemon_Count FROM AvPokemon WHERE Id NOT IN (' + constants.eventOnlyPokemonIdsToString() + ')';
     }
+    //Case where some of the game boxes and/or additional options boxes are checked
     else{
-        var where = whereStatement(checkedUltraSun, checkedUltraMoon, checkedSun, checkedMoon, checkedOmegaRuby, checkedAlphaSapphire, checkedX, checkedY, checkedBlack2, checkedWhite2, checkedBlack, checkedWhite, checkedHeartGold, checkedSoulSilver, checkedDiamond, checkedPearl, checkedPlatinum, checkedFireRed, checkedLeafGreen, checkedRuby, checkedEmerald, checkedGold, checkedSilver, checkedCrystal3DS, checkedCrystalGameboy, checkedRed, checkedBlue, checkedYellow, checkedFriendSafari, checkedDreamRadar, checkedPokewalker, checkedDualSlot);
-        var sqlQuery = 'SELECT COUNT(Id) AS Pokemon_Count FROM AvPokemon WHERE ' + where + ' AND Id NOT IN (' + constants.eventOnlyPokemonIdsToString + ')';
+        var where = whereStatement(checkedUltraSun, checkedUltraMoon, checkedSun, checkedMoon, checkedOmegaRuby, checkedAlphaSapphire, checkedX, checkedY, checkedBlack2, checkedWhite2, checkedBlack, checkedWhite, checkedHeartGold, checkedSoulSilver, checkedDiamond, checkedPearl, checkedPlatinum, checkedFireRed, checkedLeafGreen, checkedRuby, checkedSapphire, checkedEmerald, checkedGold, checkedSilver, checkedCrystal3DS, checkedCrystalGameboy, checkedRed, checkedBlue, checkedYellow, checkedFriendSafari, checkedDreamRadar, checkedPokewalker, checkedDualSlot);
+        var sqlQuery = 'SELECT COUNT(Id) AS Pokemon_Count FROM AvPokemon WHERE ' + where + ' AND Id NOT IN (' + constants.eventOnlyPokemonIdsToString() + ')';
         return sqlQuery;
     }
 }
