@@ -437,10 +437,10 @@ exports.yourPathGet = function (req, res, next){
 };
 */
 
-//TO-DO: Test exports.yourPathPost
+
 //TO-DO: Add rest of queries. 
 exports.yourPathPost = async (req, res, next) => {
-    //The gameCount lets us know how many boxes the user checks in case they don't check any boxes
+    //The gameCount lets us know how many boxes on the your_path page the user checks. Useful to know in case they didn't check any boxes.
     var gameCount = 0;
     //We start out assuming that all the boxes are unchecked.
     var checkedUltraSun = false;
@@ -482,7 +482,7 @@ exports.yourPathPost = async (req, res, next) => {
         checkedUltraSun = true;
         gameCount++;
     }
-    if (req.body.ultraMoon == 'ultra_moon'){
+    if (req.body.ultra_moon == 'ultra_moon'){
         checkedUltraMoon = true;
         gameCount++;
     }
@@ -571,7 +571,7 @@ exports.yourPathPost = async (req, res, next) => {
         gameCount++;
     }
     if (req.body.silver == 'silver'){
-        checkdedSilver = true;
+        checkedSilver = true;
         gameCount++;
     }
     if (req.body.crystal_3DS == 'crystal_3DS'){
@@ -607,33 +607,100 @@ exports.yourPathPost = async (req, res, next) => {
     if (req.body.dual_slot == 'dual_slot'){
         checkedDualSlot = true;
     }
-    //Use the custom pokemonQueryBuilder Module to create the query that will determine how many pokemon the user will be missing based on the games they have. 
-    var findMissingPokemonCountQuery = pokemonQueryBuilder.missingPokemonCountQuery(checkedUltraSun, checkedUltraMoon, checkedSun, checkedMoon, checkedOmegaRuby, checkedAlphaSapphire, checkedX, checkedY, checkedBlack2, checkedWhite2, checkedBlack, checkedWhite, checkedHeartGold, checkedSoulSilver, checkedDiamond, checkedPearl, checkedPlatinum, checkedFireRed, checkedLeafGreen, checkedRuby, checkedSapphire, checkedEmerald, checkedGold, checkedSilver, checkedCrystal3DS, checkedCrystalGameboy, checkedRed, checkedBlue, checkedYellow, checkedFriendSafari, checkedDreamRadar, checkedPokewalker, checkedDualSlot, gameCount);
+    //Create the query that will determine how many pokemon the user will be missing based on the games they have. (Uses the custom pokemonQueryBuilder Module)
+    var countMissingPokemonQuery = pokemonQueryBuilder.missingPokemonCountQuery(checkedUltraSun, checkedUltraMoon, checkedSun, checkedMoon, checkedOmegaRuby, checkedAlphaSapphire, checkedX, checkedY, checkedBlack2, checkedWhite2, checkedBlack, checkedWhite, checkedHeartGold, checkedSoulSilver, checkedDiamond, checkedPearl, checkedPlatinum, checkedFireRed, checkedLeafGreen, checkedRuby, checkedSapphire, checkedEmerald, checkedGold, checkedSilver, checkedCrystal3DS, checkedCrystalGameboy, checkedRed, checkedBlue, checkedYellow, checkedFriendSafari, checkedDreamRadar, checkedPokewalker, checkedDualSlot, gameCount);
     //Running the missingPokemonCountQuery
     try {
         const client = await pool.connect();
         //Testing use of constants
-        console.log(findMissingPokemonCountQuery)
-        const result = await client.query(findMissingPokemonCountQuery);
+        console.log(countMissingPokemonQuery)
+        const result = await client.query(countMissingPokemonQuery);
         var jsonResult = result.rows;
-        var pokemonCount = jsonResult[0].pokemon_count;
-        console.log(pokemonCount);
+        var missingPokemonCount = jsonResult[0].pokemon_count;
+        console.log(missingPokemonCount);
         client.release();
       } catch (err) {
         console.error(err);
         res.send("Error " + err);
       }
-
-      //RENDERING THE ACTUAL PAGE
-            //loading some of the constants that will be used on the page
-            var totalPokemon = constants.totalPokemon();
-            var eventOnlyPokemonTotal = constants.eventOnlyPokemonCount();
-            res.render('your_path_results_testing', {title: "Your Path to Catch'em All", pokemon_count: pokemonCount, event_only_pokemon_total: eventOnlyPokemonTotal, total_pokemon: totalPokemon});
-            
-
-
-    
-
+    //Create the query that will list the names and Ids of the missing pokemon.
+    var missingPokemonQuery = pokemonQueryBuilder.missingPokemonQuery(checkedUltraSun, checkedUltraMoon, checkedSun, checkedMoon, checkedOmegaRuby, checkedAlphaSapphire, checkedX, checkedY, checkedBlack2, checkedWhite2, checkedBlack, checkedWhite, checkedHeartGold, checkedSoulSilver, checkedDiamond, checkedPearl, checkedPlatinum, checkedFireRed, checkedLeafGreen, checkedRuby, checkedSapphire, checkedEmerald, checkedGold, checkedSilver, checkedCrystal3DS, checkedCrystalGameboy, checkedRed, checkedBlue, checkedYellow, checkedFriendSafari, checkedDreamRadar, checkedPokewalker, checkedDualSlot, gameCount);
+    //Running the findMissingPokemonListQuery
+    try {
+        const client = await pool.connect();
+        console.log(missingPokemonQuery);
+        const result = await client.query(missingPokemonQuery);
+        var jsonResult = result.rows;
+        //creating the names array
+        var Names = [];
+        for (var i=0; i<jsonResult.length; i++){
+            Names.push(jsonResult[i].name);
+        }
+        //creating the ids array
+        var Ids = [];
+        for (var i=0; i<jsonResult.length; i++){
+            Ids.push(jsonResult[i].id);
+        }
+        //Creating the Pokemon Object so it can be iterated through on my Pug View
+        var missingPokemon = {};
+        Ids.forEach((Id, i) => missingPokemon[Id] = Names[i]);
+        client.release();
+      } catch (err) {
+        console.error(err);
+        res.send("Error " + err);
+      }
+    //Create the Query that will make game recommendations
+    var recommendationsQuery = pokemonQueryBuilder.recommendationsQuery(checkedUltraSun, checkedUltraMoon, checkedSun, checkedMoon, checkedOmegaRuby, checkedAlphaSapphire, checkedX, checkedY, checkedBlack2, checkedWhite2, checkedBlack, checkedWhite, checkedHeartGold, checkedSoulSilver, checkedDiamond, checkedPearl, checkedPlatinum, checkedFireRed, checkedLeafGreen, checkedRuby, checkedSapphire, checkedEmerald, checkedGold, checkedSilver, checkedCrystal3DS, checkedCrystalGameboy, checkedRed, checkedBlue, checkedYellow, checkedFriendSafari, checkedDreamRadar, checkedPokewalker, checkedDualSlot, gameCount);
+    try {
+        const client = await pool.connect();
+        const result = await client.query(recommendationsQuery);
+        console.log(result);
+        var jsonResult = result.rows;
+        if (checkedUltraSun) {var ultraSunRec = 'no'}
+        else {var ultraSunRec = jsonResult[0].usunr}
+        if (checkedUltraMoon) {var ultraMoonRec = 'no'}
+        else {var ultraMoonRec = jsonResult[0].umoonr}
+        if (checkedOmegaRuby) {var omegaRubyRec = 'no'}
+        else {var omegaRubyRec = jsonResult[0].omegarr}
+        if (checkedAlphaSapphire) {var alphaSapphireRec = 'no'}
+        else {var alphaSapphireRec = jsonResult[0].alphasr}
+        if (checkedX) {xRec = 'no'}
+        else {var xRec = jsonResult[0].xr}
+        if (checkedY) {yRec = 'no'}
+        else {var yRec = jsonResult[0].yr}
+        if (checkedCrystal3DS) {crystal3DSRec = 'no'}
+        else {var crystal3DSRec = jsonResult[0].crystal3dsr}
+        client.release();
+      } catch (err) {
+        console.error(err);
+        res.send("Error " + err);
+      }
+    //The event only pokemon Query
+    var eventOnlyPokemonQuery = pokemonQueryBuilder.eventPokemonQuery();
+    try {
+        const client = await pool.connect();
+        const result = await client.query(eventOnlyPokemonQuery);
+        var jsonResult = result.rows;
+        var eventIds = [];
+        for (var i=0; i<jsonResult.length; i++){
+            eventIds.push(jsonResult[i].id);
+        }
+        var eventNames = [];
+        for (var i=0; i<jsonResult.length; i++){
+            eventNames.push(jsonResult[i].name);
+        }
+        var eventPokemon = {};
+        eventIds.forEach((Id, i) => eventPokemon[Id] = eventNames[i]);
+        client.release();
+      } catch (err) {
+        console.error(err);
+        res.send("Error " + err);
+    }
+    //RENDERING THE ACTUAL PAGE
+    //loading some of the constants that will be used on the page
+    var totalPokemon = constants.totalPokemon();
+    var eventOnlyPokemonTotal = constants.eventOnlyPokemonCount();
+    res.render('your_path_results_testing', {title: "Your Path to Catch'em All", event_pokemon: eventPokemon, missing_pokemon_count: missingPokemonCount, missing_pokemon: missingPokemon, ultra_sun_rec: ultraSunRec, ultra_moon_rec: ultraMoonRec, omega_ruby_rec: omegaRubyRec, alpha_sapphire_rec: alphaSapphireRec, x_rec: xRec, y_rec: yRec, crystal_3ds_rec: crystal3DSRec, event_only_pokemon_total: eventOnlyPokemonTotal, total_pokemon: totalPokemon});
 }
 
 

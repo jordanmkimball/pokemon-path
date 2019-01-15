@@ -186,6 +186,45 @@ exports.missingPokemonCountQuery = function(checkedUltraSun, checkedUltraMoon, c
 }
 
 
+//Returns a SQL Query to find the list of Pokemon (names and Id's) that a player is unable to catch given the games they currently own
+exports.missingPokemonQuery = function(checkedUltraSun, checkedUltraMoon, checkedSun, checkedMoon, checkedOmegaRuby, checkedAlphaSapphire, checkedX, checkedY, checkedBlack2, checkedWhite2, checkedBlack, checkedWhite, checkedHeartGold, checkedSoulSilver, checkedDiamond, checkedPearl, checkedPlatinum, checkedFireRed, checkedLeafGreen, checkedRuby, checkedSapphire, checkedEmerald, checkedGold, checkedSilver, checkedCrystal3DS, checkedCrystalGameboy, checkedRed, checkedBlue, checkedYellow, checkedFriendSafari, checkedDreamRadar, checkedPokewalker, checkedDualSlot, gameCount){
+    //Case where none of the Game boxes are checked
+    if(gameCount == 0){
+        return 'SELECT Id, Name FROM AvPokemon WHERE Id NOT IN (' + constants.eventOnlyPokemonIdsToString() + ')';
+    }
+    else{
+        var where = whereStatement(checkedUltraSun, checkedUltraMoon, checkedSun, checkedMoon, checkedOmegaRuby, checkedAlphaSapphire, checkedX, checkedY, checkedBlack2, checkedWhite2, checkedBlack, checkedWhite, checkedHeartGold, checkedSoulSilver, checkedDiamond, checkedPearl, checkedPlatinum, checkedFireRed, checkedLeafGreen, checkedRuby, checkedSapphire, checkedEmerald, checkedGold, checkedSilver, checkedCrystal3DS, checkedCrystalGameboy, checkedRed, checkedBlue, checkedYellow, checkedFriendSafari, checkedDreamRadar, checkedPokewalker, checkedDualSlot);
+        var sqlQuery = 'SELECT Id, Name FROM AvPokemon WHERE ' + where + ' AND Id NOT IN (' + constants.eventOnlyPokemonIdsToString() + ')';
+        return sqlQuery;
+    }
+}
+
+//Returns a SQL Query that gives users a list of recommended games to help them complete their pokemon collection
+exports.recommendationsQuery = function(checkedUltraSun, checkedUltraMoon, checkedSun, checkedMoon, checkedOmegaRuby, checkedAlphaSapphire, checkedX, checkedY, checkedBlack2, checkedWhite2, checkedBlack, checkedWhite, checkedHeartGold, checkedSoulSilver, checkedDiamond, checkedPearl, checkedPlatinum, checkedFireRed, checkedLeafGreen, checkedRuby, checkedSapphire, checkedEmerald, checkedGold, checkedSilver, checkedCrystal3DS, checkedCrystalGameboy, checkedRed, checkedBlue, checkedYellow, checkedFriendSafari, checkedDreamRadar, checkedPokewalker, checkedDualSlot, gameCount){
+    //Creating some variables to make the recommendation query easier
+    var sumWhen = ' SUM(CASE WHEN ';
+    var inAs = " IN ('C','E','B','R','S') THEN 1 ELSE 0 END) AS ";
+    //Case where none of the recommended Game boxes are checked
+    if(gameCount == 0){
+        return 'SELECT ' + sumWhen + 'USun' + inAs + 'USunR,' + sumWhen + 'UMoon' + inAs + 'UMoonR,' + sumWhen + 'OmegaR' + inAs + 'OmegaRR,' + sumWhen + 'AlphaS' + inAs + 'AlphaSR,' + sumWhen + 'X' + inAs + 'XR,' + sumWhen + 'Y' + inAs + 'YR,' +  sumWhen + 'Crystal3DS' + inAs + 'Crystal3DSR ' + 'FROM AvPokemon';
+    }
+    //Case where some of the recommended Game Boxes are checked
+    else{
+        var where = whereStatement(checkedUltraSun, checkedUltraMoon, checkedSun, checkedMoon, checkedOmegaRuby, checkedAlphaSapphire, checkedX, checkedY, checkedBlack2, checkedWhite2, checkedBlack, checkedWhite, checkedHeartGold, checkedSoulSilver, checkedDiamond, checkedPearl, checkedPlatinum, checkedFireRed, checkedLeafGreen, checkedRuby, checkedSapphire, checkedEmerald, checkedGold, checkedSilver, checkedCrystal3DS, checkedCrystalGameboy, checkedRed, checkedBlue, checkedYellow, checkedFriendSafari, checkedDreamRadar, checkedPokewalker, checkedDualSlot);
+        var sqlQuery = 'SELECT ' + sumWhen + 'USun' + inAs + 'USunR,' + sumWhen + 'UMoon' + inAs + 'UMoonR,' + sumWhen + 'OmegaR' + inAs + 'OmegaRR,' + sumWhen + 'AlphaS' + inAs + 'AlphaSR,' + sumWhen + 'X' + inAs + 'XR,' + sumWhen + 'Y' + inAs + 'YR,' +  sumWhen + 'Crystal3DS' + inAs + 'Crystal3DSR ' + 'FROM AvPokemon WHERE ' + where;
+        return sqlQuery;
+    }
+
+}
+
+//Returns a list (names and Pokemon Id) of all of the event only Pokemon
+exports.eventPokemonQuery = function(){
+    return sqlQuery = 'SELECT Id, Name FROM AvPokemon WHERE Id IN (' + constants.eventOnlyPokemonIdsToString() +')';
+}
+
+
+
+
 
 
 
