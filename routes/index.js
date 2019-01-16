@@ -22,8 +22,11 @@ router.post('/yourpath', main_controller.yourPathPost);
 //GET request for About page
 router.get('/about', main_controller.about_get);
 
-//GET request for new players page.
+//GET request for new players page
 router.get('/newplayers', main_controller.new_get);
+
+//GET request for My Account page
+router.get('/myaccount', main_controller.my_account_get);
 
 
 //SEARCH PAGES

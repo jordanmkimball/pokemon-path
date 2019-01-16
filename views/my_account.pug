@@ -1,0 +1,23 @@
+extends layout
+
+block content
+  div.maintext
+    h1 My Account
+
+    p Enter your name below to help customize your Pokémon path. Your name will then appear on various parts of the website.
+    <br>
+
+    form(method='' action='')
+      .form-group
+      label Account Information: <br><br>
+
+        label First Name: <br>
+        input#inputNameTextbox(type="text", name="firstname")
+        <br>
+        <br>
+        input(type="submit", value="Submit")
+
+      
+
+    
+  
