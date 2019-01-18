@@ -219,7 +219,12 @@ exports.recommendationsQuery = function(checkedUltraSun, checkedUltraMoon, check
 
 //Returns a list (names and Pokemon Id) of all of the event only Pokemon
 exports.eventPokemonQuery = function(){
-    return sqlQuery = 'SELECT Id, Name FROM AvPokemon WHERE Id IN (' + constants.eventOnlyPokemonIdsToString() +')';
+    return 'SELECT Id, Name FROM AvPokemon WHERE Id IN (' + constants.eventOnlyPokemonIdsToString() +')';
+}
+
+//Returns the query to be used for displaying all game availability information about a single Pokemon by Id.
+exports.singlePokemonAvailabilityQuery = function(pokemonID){
+    return 'SELECT Id, Name, USun, UMoon, Sun, Moon, OmegaR, AlphaS, FSafari, X, Y, White2, Black2, White, Black, Pokewalker, SoulSilver, HeartGold, Platinum, Pearl, Diamond, Emerald, LeafGreen, FireRed, Sapphire, Ruby, Crystal3DS, Crystal, Silver, Gold, Yellow, JpBlue, EngBlue, Red FROM AvPokemon WHERE id =' + pokemonID;
 }
 
 

@@ -4,20 +4,31 @@ block content
   div.maintext
     h1 My Account
 
-    p Enter your name below to help customize your Pokémon path. Your name will then appear on various parts of the website.
-    <br>
+    //This div only shows up if the user hasn't entered their name in the form yet
+    div#nameForm
 
-    form(method='' action='')
-      .form-group
-      label Account Information: <br><br>
+      p Enter your name below to help customize your Pokémon path. Your name will then appear on various parts of the website.
+      <br>
 
-        label First Name: <br>
-        input#inputNameTextbox(type="text", name="firstname")
-        <br>
-        <br>
-        input(type="submit", value="Submit")
+      form(method='' action='')
+        .form-group
+        label Account Information: <br><br>
 
+          label First Name: <br>
+          input#inputNameTextbox(type="text", name="firstname")
+          <br>
+          <br>
+          input#submitButton(type="submit", value="Submit")
+
+    div#welcomeUserBlock(hidden="true")
+      <br>
+      //JavaScript will replace the "user" below with the actual username 
+      h2#welcomeUserText Welcome, user!
+      <br>
+      <br>
+      button.btn.btn-primary(type='submit') Clear Account Data
       
 
-    
-  
+
+  script
+    include clientSide-js/myAccountScripts.js

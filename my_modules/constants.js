@@ -14,3 +14,4 @@ exports.eventOnlyPokemonIdsToString = function() {
     var eventOnlyPokemonString = eventOnlyPokemonIdArray.join(", ");
     return eventOnlyPokemonString;
 }
+

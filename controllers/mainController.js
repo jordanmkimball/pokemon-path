@@ -43,7 +43,7 @@ exports.my_account_get = function (req, res, next){
 
 //Display Your Path Page on GET
 exports.yourPathGet = function (req, res, next){
-    res.render('your_path', {title: 'Which Pokémon are you missing?'});
+    res.render('your_path');
 };
 
 exports.yourPathPost = async (req, res, next) => {
@@ -307,7 +307,7 @@ exports.yourPathPost = async (req, res, next) => {
     //loading some of the constants that will be used on the page
     var totalPokemon = constants.totalPokemon();
     var eventOnlyPokemonTotal = constants.eventOnlyPokemonCount();
-    res.render('your_path_results_testing', {title: "Your Path to Catch'em All", event_pokemon: eventPokemon, missing_pokemon_count: missingPokemonCount, missing_pokemon: missingPokemon, ultra_sun_rec: ultraSunRec, ultra_moon_rec: ultraMoonRec, omega_ruby_rec: omegaRubyRec, alpha_sapphire_rec: alphaSapphireRec, x_rec: xRec, y_rec: yRec, crystal_3ds_rec: crystal3DSRec, event_only_pokemon_total: eventOnlyPokemonTotal, total_pokemon: totalPokemon});
+    res.render('your_path_results', { event_pokemon: eventPokemon, missing_pokemon_count: missingPokemonCount, missing_pokemon: missingPokemon, ultra_sun_rec: ultraSunRec, ultra_moon_rec: ultraMoonRec, omega_ruby_rec: omegaRubyRec, alpha_sapphire_rec: alphaSapphireRec, x_rec: xRec, y_rec: yRec, crystal_3ds_rec: crystal3DSRec, event_only_pokemon_total: eventOnlyPokemonTotal, total_pokemon: totalPokemon});
 }
 
 
@@ -317,11 +317,11 @@ exports.yourPathPost = async (req, res, next) => {
 //Display information about a single pokemon by id
 exports.pokemon_id_search = async (req, res, next) => {
     console.log("Return pokemon with Id: " + req.params.id);
-    var useId = req.params.id;
-    var sqlStatement = 'SELECT Id, Name, USun, UMoon, Sun, Moon, OmegaR, AlphaS, FSafari, X, Y, White2, Black2, White, Black, Pokewalker, SoulSilver, HeartGold, Platinum, Pearl, Diamond, Emerald, LeafGreen, FireRed, Sapphire, Ruby, Crystal3DS, Crystal, Silver, Gold, Yellow, JpBlue, EngBlue, Red FROM AvPokemon WHERE id =' + useId;
+    var pokemonID = req.params.id;
+    var pokemonAvailabilityQuery = pokemonQueryBuilder.singlePokemonAvailabilityQuery(pokemonID);
     try {
         const client = await pool.connect();
-        const result = await client.query(sqlStatement);
+        const result = await client.query(pokemonAvailabilityQuery);
         var jsonResult = result.rows;
         var pokedexNumber = jsonResult[0].id;
         var pokemonName = jsonResult[0].name;
@@ -388,7 +388,7 @@ exports.pokemon_id_search = async (req, res, next) => {
         var BlueMethod = ad.availabilityMethod(jsonResult[0].engblue);
         var Yellow = ad.availabilityDecoder(jsonResult[0].yellow);
         var YellowMethod = ad.availabilityMethod(jsonResult[0].yellow);
-        res.render('pokemon_id_search', {title: 'Pokémon Availability Details', pokemon_id: pokedexNumber, pokemon_name: pokemonName, 
+        res.render('pokemon_id_search', {pokemon_id: pokedexNumber, pokemon_name: pokemonName, 
             ultra_sun: UltraSun, ultra_sun_method: UltraSunMethod, ultra_moon: UltraMoon, ultra_moon_method: UltraMoonMethod, sun: Sun, sun_method: SunMethod, 
             moon: Moon, moon_method: MoonMethod, alpha_sapphire: AlphaSapphire, alpha_sapphire_method: AlphaSapphireMethod, 
             omega_ruby: OmegaRuby, omega_ruby_method: OmegaRubyMethod, friend_safari: FriendSafari, friend_safari_method: FriendSafariMethod, 

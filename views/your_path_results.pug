@@ -2,12 +2,12 @@ extends layout
 
 block content
   div.maintext 
-    h1.underline= title
+    h1#yourPathResultsHeader.underline Your Path to Catch'em All
 
-    if pokemon_count > 0
-      p.results Based on the games you selected you are #[em able] to obtain <span class= 'bold'> #{807 - 16 - pokemon_count} </span> out of 807 total Pokémon
-      p.results You are #[em unable] to obtain <span class='bold'> #{pokemon_count} </span> Pokémon through in-game means, that can be obtained in other games.
-      p.results Additionally there are currently 16 event only Pokémon that cannot be obtained outside of official Nintendo events.
+    if missing_pokemon_count > 0
+      p.results Based on the games you selected you are #[em able] to obtain <span class= 'bold'> #{total_pokemon - event_only_pokemon_total - missing_pokemon_count} </span> out of #{total_pokemon} total Pokémon
+      p.results You are #[em unable] to obtain <span class='bold'> #{missing_pokemon_count} </span> Pokémon through in-game means, that can be obtained in other games.
+      p.results Additionally there are currently #{event_only_pokemon_total} event only Pokémon that cannot be obtained outside of official Nintendo events.
 
       h3 Here is a list of games that we recommend to help you complete your journey to catch'em all:
 
@@ -27,22 +27,24 @@ block content
         unless crystal_3ds_rec == 'no' || crystal_3ds_rec == 0
           li Pokémon Crystal (3DS Virtual Console): #{crystal_3ds_rec} New Pokémon
 
-      h3 List of Missing Pokémon
+      h3#missingPokemonHeader List of Missing Pokémon
       img#bulbasaur(src = '../images/bulbasaur.png', alt = 'A picture of Bulbasaur, Ivysaur, and Venosaur')
 
-      each val, key in pokemon
+      each val, key in missing_pokemon
         p #{key}. 
           a(href='/search/' + key) #{val}
+
+
+      h3 List of Event Only Pokémon
+      p The following Pokémon cannot be obtained through normal means. The only way to get one is through trade, or through an official Pokémon event.
+      img#mew(src = '../images/mew.png', alt = 'Picture of Mew')
+      each val, key in event_pokemon
+        p #{key}. 
+          a(href='/search/' + key) #{val}
+      
     else
-      h3 Congratulations! You are currently able to catch all Pokémon in-game, that are not one of the 16 event only Pokémon.
+      h3 Congratulations! You are currently able to catch all Pokémon in-game, that are not one of the #{event_only_pokemon_total} event only Pokémon.
       img#happyPikachu(src='../images/happy_pikachu.png', alt = 'A picture of a happy Pikachu with hearts')
 
-
-    
-    h3 List of Event Only Pokémon
-    p The following Pokémon cannot be obtained through normal means. The only way to get one is through trade, or through an official Pokémon event.
-    img#mew(src = '../images/mew.png', alt = 'Picture of Mew')
-    each val, key in event_pokemon
-      p #{key}. 
-        a(href='/search/' + key) #{val}
-
+  script
+    include clientSide-js/yourPathResults.js
