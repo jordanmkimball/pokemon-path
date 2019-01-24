@@ -27,8 +27,15 @@ block content
       <br>
       <br>
       button.btn.btn-primary(type='submit') Clear Account Data
+
+    div
+      <br>
+      <br>
+      //Actual date for dateAndTime <span> will be inserted directly from myAccountScripts.js
+      p <span class="underline"> Today's date and local time</span><span id="dateAndTime">:  </span>
       
 
 
   script
+    include clientside-js/moment.js
     include clientSide-js/myAccountScripts.js

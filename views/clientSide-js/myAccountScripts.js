@@ -5,6 +5,7 @@ const nameForm = document.getElementById('nameForm');
 const clearButton = document.querySelector('button');
 let welcomeUserBlock = document.getElementById('welcomeUserBlock');
 let welcomeUserText = document.getElementById('welcomeUserText');
+let dateAndTime = document.getElementById('dateAndTime');
 
 
 //if firstName already exists with a value in local storage, userName is equal to the localStorage value. Otherwise userName is empty
@@ -66,5 +67,14 @@ clearButton.addEventListener('click', function() {
     //We reset the welcomeUserText to the default of user
     welcomeUserText.textContent = welcomeUserText.textContent.replace(userName, "user");
 });
+
+
+//Retrieve the local date and time 
+var todaysDate = new Date();
+console.log(todaysDate);
+//Using a function from moment.js 
+todaysDate = moment(todaysDate).format("MMMM Do YYYY, hh:mm a");;
+//Insert the local date and time onto the myAccount page
+dateAndTime.textContent = dateAndTime.textContent + todaysDate;
 
 

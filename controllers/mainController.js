@@ -8,6 +8,9 @@ app.use(bodyParser.urlencoded({extended: true}));
 //Code to use async
 var async = require('async');
 
+//Code to use moment for formatting dates
+var moment = require('moment');
+
 //Declaring the PostgreSQL database
 const { Pool } = require('pg');
 const pool = new Pool({
