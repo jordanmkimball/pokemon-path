@@ -8,19 +8,19 @@ var bodyParser = require('body-parser');
 //Require both the compression and helmet modules
 var compression = require('compression');
 var helmet = require('helmet');
-//NEW CODE REQUIRED FOR HEROKU TO USE POSGRESQL
+//Code to require and use postgresql database
 const { Pool } = require('pg');
 const pool = new Pool({
   connectionString: process.env.DATABASE_URL,
   ssl: true
 });
-//END OF NEW CODE REQUIRED FOR HEROKU TO USE POSGRESQL
 
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
 
 var app = express();
 
+//Code to use helmet to protect against certain vulnerabilities
 app.use(helmet());
 
 // view engine setup
@@ -28,6 +28,7 @@ app.use(compression()); //compress all routes
 
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'pug');
+
 
 app.use(logger('dev'));
 app.use(bodyParser.json()); //added this to the code. 
