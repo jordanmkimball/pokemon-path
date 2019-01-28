@@ -171,7 +171,7 @@ function whereStatement(checkedUltraSun, checkedUltraMoon, checkedSun, checkedMo
 
 
 
-//Returns a SQL Query to determine how many pokemon a player is unable to catch given the games they currently own
+///Returns a SQL Query to determine how many pokemon a player is unable to catch given the games they currently own
 exports.missingPokemonCountQuery = function(checkedUltraSun, checkedUltraMoon, checkedSun, checkedMoon, checkedOmegaRuby, checkedAlphaSapphire, checkedX, checkedY, checkedBlack2, checkedWhite2, checkedBlack, checkedWhite, checkedHeartGold, checkedSoulSilver, checkedDiamond, checkedPearl, checkedPlatinum, checkedFireRed, checkedLeafGreen, checkedRuby, checkedSapphire, checkedEmerald, checkedGold, checkedSilver, checkedCrystal3DS, checkedCrystalGameboy, checkedRed, checkedBlue, checkedYellow, checkedFriendSafari, checkedDreamRadar, checkedPokewalker, checkedDualSlot, gameCount){
     //Case when none of the Game boxes are checked
     if(gameCount == 0){

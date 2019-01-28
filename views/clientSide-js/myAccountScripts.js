@@ -42,8 +42,6 @@ if(userName != ""){
     switchVisability();
 }
 
-//TO-DO: Determine if I should sanitize the user Input for this function any further
-
 //Function that handles taking the users first name text input and moving it to localStorage.
 form.addEventListener('submit', function(e){
     e.preventDefault();
@@ -64,6 +62,7 @@ form.addEventListener('submit', function(e){
     }
 });
 
+//Clears user's name and resets local storage. 
 clearButton.addEventListener('click', function() {
     //Clear local Storage
     localStorage.clear();

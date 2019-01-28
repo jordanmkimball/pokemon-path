@@ -23,11 +23,15 @@ var ad = require('../my_modules/availabilityDecoder');
 //My own custom module to create the queries for the pokemon database
 var pokemonQueryBuilder = require('../my_modules/pokemonQueryBuilder');
 //My own custom module that contains a list of constants that can all be changed from one convenient location
-var constants = require('../my_modules/constants')
+var constants = require('../my_modules/constants');
 
 
 //START OF GET REQUEST FUNCTIONS
 
+//Display home page on GET
+exports.home_page_get = function (req, res, next){
+    res.render('index');
+}
 
 //Display About Page on GET
 exports.about_get = function (req, res){
@@ -45,11 +49,13 @@ exports.my_account_get = function (req, res, next){
 };
 
 //Display Your Path Page on GET
-exports.yourPathGet = function (req, res, next){
+exports.your_path_get = function (req, res, next){
     res.render('your_path');
 };
 
-exports.yourPathPost = async (req, res, next) => {
+
+//Display your_path_results page with number of catchable and missing pokemon, list of missing pokemon, game recommendations, and list of event only pokemon on post. 
+exports.your_path_post = async (req, res, next) => {
     //The gameCount lets us know how many boxes on the your_path page the user checks. Useful to know in case they didn't check any boxes.
     var gameCount = 0;
     //We start out assuming that all the boxes are unchecked.
@@ -217,13 +223,11 @@ exports.yourPathPost = async (req, res, next) => {
     if (req.body.dual_slot == 'dual_slot'){
         checkedDualSlot = true;
     }
-    //Create the query that will determine how many pokemon the user will be missing based on the games they have. (Uses the custom pokemonQueryBuilder Module)
+    //Create the query that will determine how many pokemon the user will be missing based on the games they have checked. (Uses the custom pokemonQueryBuilder Module)
     var countMissingPokemonQuery = pokemonQueryBuilder.missingPokemonCountQuery(checkedUltraSun, checkedUltraMoon, checkedSun, checkedMoon, checkedOmegaRuby, checkedAlphaSapphire, checkedX, checkedY, checkedBlack2, checkedWhite2, checkedBlack, checkedWhite, checkedHeartGold, checkedSoulSilver, checkedDiamond, checkedPearl, checkedPlatinum, checkedFireRed, checkedLeafGreen, checkedRuby, checkedSapphire, checkedEmerald, checkedGold, checkedSilver, checkedCrystal3DS, checkedCrystalGameboy, checkedRed, checkedBlue, checkedYellow, checkedFriendSafari, checkedDreamRadar, checkedPokewalker, checkedDualSlot, gameCount);
     //Running the missingPokemonCountQuery
     try {
         const client = await pool.connect();
-        //Testing use of constants
-        console.log(countMissingPokemonQuery)
         const result = await client.query(countMissingPokemonQuery);
         var jsonResult = result.rows;
         var missingPokemonCount = jsonResult[0].pokemon_count;
@@ -238,7 +242,6 @@ exports.yourPathPost = async (req, res, next) => {
     //Running the findMissingPokemonListQuery
     try {
         const client = await pool.connect();
-        console.log(missingPokemonQuery);
         const result = await client.query(missingPokemonQuery);
         var jsonResult = result.rows;
         //creating the names array
@@ -314,12 +317,8 @@ exports.yourPathPost = async (req, res, next) => {
 }
 
 
-
-
-
 //Display information about a single pokemon by id
 exports.pokemon_id_search = async (req, res, next) => {
-    console.log("Return pokemon with Id: " + req.params.id);
     var pokemonID = req.params.id;
     var pokemonAvailabilityQuery = pokemonQueryBuilder.singlePokemonAvailabilityQuery(pokemonID);
     try {
@@ -329,68 +328,68 @@ exports.pokemon_id_search = async (req, res, next) => {
         var pokedexNumber = jsonResult[0].id;
         var pokemonName = jsonResult[0].name;
         //Using the custom availabilityDecoder Module and its functions
-        var UltraSun = ad.availabilityDecoder(jsonResult[0].usun);
-        var UltraSunMethod = ad.availabilityMethod(jsonResult[0].usun);
-        var UltraMoon = ad.availabilityDecoder(jsonResult[0].umoon);
-        var UltraMoonMethod = ad.availabilityMethod(jsonResult[0].umoon);
-        var Sun = ad.availabilityDecoder(jsonResult[0].sun);
-        var SunMethod = ad.availabilityMethod(jsonResult[0].sun);
-        var Moon = ad.availabilityDecoder(jsonResult[0].moon);
-        var MoonMethod = ad.availabilityMethod(jsonResult[0].moon);
-        var AlphaSapphire = ad.availabilityDecoder(jsonResult[0].alphas);
-        var AlphaSapphireMethod = ad.availabilityMethod(jsonResult[0].alphas);
-        var OmegaRuby = ad.availabilityDecoder(jsonResult[0].omegar);
-        var OmegaRubyMethod = ad.availabilityMethod(jsonResult[0].omegar);
-        var FriendSafari = ad.availabilityDecoder(jsonResult[0].fsafari);
-        var FriendSafariMethod = ad.availabilityMethod(jsonResult[0].fsafari);
-        var X = ad.availabilityDecoder(jsonResult[0].x);
-        var XMethod = ad.availabilityMethod(jsonResult[0].x);
-        var Y = ad.availabilityDecoder(jsonResult[0].y);
-        var YMethod = ad.availabilityMethod(jsonResult[0].y);
-        var Black2 = ad.availabilityDecoder(jsonResult[0].black2);
-        var Black2Method = ad.availabilityMethod(jsonResult[0].black2);
-        var White2 = ad.availabilityDecoder(jsonResult[0].white2);
-        var White2Method = ad.availabilityMethod(jsonResult[0].white2);
-        var Black = ad.availabilityDecoder(jsonResult[0].black);
-        var BlackMethod = ad.availabilityMethod(jsonResult[0].black);
-        var White = ad.availabilityDecoder(jsonResult[0].white);
-        var WhiteMethod = ad.availabilityMethod(jsonResult[0].white);
-        var HeartGold = ad.availabilityDecoder(jsonResult[0].heartgold);
-        var HeartGoldMethod = ad.availabilityMethod(jsonResult[0].heartgold);
-        var SoulSilver = ad.availabilityDecoder(jsonResult[0].soulsilver);
-        var SoulSilverMethod = ad.availabilityMethod(jsonResult[0].soulsilver);
-        var Pokewalker = ad.availabilityDecoder(jsonResult[0].pokewalker);
-        var PokewalkerMethod = ad.availabilityMethod(jsonResult[0].pokewalker);
-        var Diamond = ad.availabilityDecoder(jsonResult[0].diamond);
-        var DiamondMethod = ad.availabilityMethod(jsonResult[0].diamond);
-        var Pearl = ad.availabilityDecoder(jsonResult[0].pearl);
-        var PearlMethod = ad.availabilityMethod(jsonResult[0].pearl);
-        var Platinum = ad.availabilityDecoder(jsonResult[0].platinum);
-        var PlatinumMethod = ad.availabilityMethod(jsonResult[0].platinum);
-        var FireRed = ad.availabilityDecoder(jsonResult[0].firered);
-        var FireRedMethod = ad.availabilityMethod(jsonResult[0].firered);
-        var LeafGreen = ad.availabilityDecoder(jsonResult[0].leafgreen);
-        var LeafGreenMethod = ad.availabilityMethod(jsonResult[0].leafgreen);
-        var Ruby = ad.availabilityDecoder(jsonResult[0].ruby);
-        var RubyMethod = ad.availabilityMethod(jsonResult[0].ruby);
-        var Sapphire = ad.availabilityDecoder(jsonResult[0].sapphire);
-        var SapphireMethod = ad.availabilityMethod(jsonResult[0].sapphire);
-        var Emerald = ad.availabilityDecoder(jsonResult[0].emerald);
-        var EmeraldMethod = ad.availabilityMethod(jsonResult[0].emerald);
-        var Gold = ad.availabilityDecoder(jsonResult[0].gold);
-        var GoldMethod = ad.availabilityMethod(jsonResult[0].gold);
-        var Silver = ad.availabilityDecoder(jsonResult[0].silver);
-        var SilverMethod = ad.availabilityMethod(jsonResult[0].silver);
-        var Crystal3DS = ad.availabilityDecoder(jsonResult[0].crystal3ds);
-        var Crystal3DSMethod = ad.availabilityMethod(jsonResult[0].crystal3ds);
-        var Crystal = ad.availabilityDecoder(jsonResult[0].crystal);
-        var CrystalMethod = ad.availabilityMethod(jsonResult[0].crystal);
-        var Red = ad.availabilityDecoder(jsonResult[0].red);
-        var RedMethod = ad.availabilityMethod(jsonResult[0].red);
-        var Blue = ad.availabilityDecoder(jsonResult[0].engblue);
-        var BlueMethod = ad.availabilityMethod(jsonResult[0].engblue);
-        var Yellow = ad.availabilityDecoder(jsonResult[0].yellow);
-        var YellowMethod = ad.availabilityMethod(jsonResult[0].yellow);
+        var UltraSun = ad.isObtainableInGame(jsonResult[0].usun);
+        var UltraSunMethod = ad.availabilityDescription(jsonResult[0].usun);
+        var UltraMoon = ad.isObtainableInGame(jsonResult[0].umoon);
+        var UltraMoonMethod = ad.availabilityDescription(jsonResult[0].umoon);
+        var Sun = ad.isObtainableInGame(jsonResult[0].sun);
+        var SunMethod = ad.availabilityDescription(jsonResult[0].sun);
+        var Moon = ad.isObtainableInGame(jsonResult[0].moon);
+        var MoonMethod = ad.availabilityDescription(jsonResult[0].moon);
+        var AlphaSapphire = ad.isObtainableInGame(jsonResult[0].alphas);
+        var AlphaSapphireMethod = ad.availabilityDescription(jsonResult[0].alphas);
+        var OmegaRuby = ad.isObtainableInGame(jsonResult[0].omegar);
+        var OmegaRubyMethod = ad.availabilityDescription(jsonResult[0].omegar);
+        var FriendSafari = ad.isObtainableInGame(jsonResult[0].fsafari);
+        var FriendSafariMethod = ad.availabilityDescription(jsonResult[0].fsafari);
+        var X = ad.isObtainableInGame(jsonResult[0].x);
+        var XMethod = ad.availabilityDescription(jsonResult[0].x);
+        var Y = ad.isObtainableInGame(jsonResult[0].y);
+        var YMethod = ad.availabilityDescription(jsonResult[0].y);
+        var Black2 = ad.isObtainableInGame(jsonResult[0].black2);
+        var Black2Method = ad.availabilityDescription(jsonResult[0].black2);
+        var White2 = ad.isObtainableInGame(jsonResult[0].white2);
+        var White2Method = ad.availabilityDescription(jsonResult[0].white2);
+        var Black = ad.isObtainableInGame(jsonResult[0].black);
+        var BlackMethod = ad.availabilityDescription(jsonResult[0].black);
+        var White = ad.isObtainableInGame(jsonResult[0].white);
+        var WhiteMethod = ad.availabilityDescription(jsonResult[0].white);
+        var HeartGold = ad.isObtainableInGame(jsonResult[0].heartgold);
+        var HeartGoldMethod = ad.availabilityDescription(jsonResult[0].heartgold);
+        var SoulSilver = ad.isObtainableInGame(jsonResult[0].soulsilver);
+        var SoulSilverMethod = ad.availabilityDescription(jsonResult[0].soulsilver);
+        var Pokewalker = ad.isObtainableInGame(jsonResult[0].pokewalker);
+        var PokewalkerMethod = ad.availabilityDescription(jsonResult[0].pokewalker);
+        var Diamond = ad.isObtainableInGame(jsonResult[0].diamond);
+        var DiamondMethod = ad.availabilityDescription(jsonResult[0].diamond);
+        var Pearl = ad.isObtainableInGame(jsonResult[0].pearl);
+        var PearlMethod = ad.availabilityDescription(jsonResult[0].pearl);
+        var Platinum = ad.isObtainableInGame(jsonResult[0].platinum);
+        var PlatinumMethod = ad.availabilityDescription(jsonResult[0].platinum);
+        var FireRed = ad.isObtainableInGame(jsonResult[0].firered);
+        var FireRedMethod = ad.availabilityDescription(jsonResult[0].firered);
+        var LeafGreen = ad.isObtainableInGame(jsonResult[0].leafgreen);
+        var LeafGreenMethod = ad.availabilityDescription(jsonResult[0].leafgreen);
+        var Ruby = ad.isObtainableInGame(jsonResult[0].ruby);
+        var RubyMethod = ad.availabilityDescription(jsonResult[0].ruby);
+        var Sapphire = ad.isObtainableInGame(jsonResult[0].sapphire);
+        var SapphireMethod = ad.availabilityDescription(jsonResult[0].sapphire);
+        var Emerald = ad.isObtainableInGame(jsonResult[0].emerald);
+        var EmeraldMethod = ad.availabilityDescription(jsonResult[0].emerald);
+        var Gold = ad.isObtainableInGame(jsonResult[0].gold);
+        var GoldMethod = ad.availabilityDescription(jsonResult[0].gold);
+        var Silver = ad.isObtainableInGame(jsonResult[0].silver);
+        var SilverMethod = ad.availabilityDescription(jsonResult[0].silver);
+        var Crystal3DS = ad.isObtainableInGame(jsonResult[0].crystal3ds);
+        var Crystal3DSMethod = ad.availabilityDescription(jsonResult[0].crystal3ds);
+        var Crystal = ad.isObtainableInGame(jsonResult[0].crystal);
+        var CrystalMethod = ad.availabilityDescription(jsonResult[0].crystal);
+        var Red = ad.isObtainableInGame(jsonResult[0].red);
+        var RedMethod = ad.availabilityDescription(jsonResult[0].red);
+        var Blue = ad.isObtainableInGame(jsonResult[0].engblue);
+        var BlueMethod = ad.availabilityDescription(jsonResult[0].engblue);
+        var Yellow = ad.isObtainableInGame(jsonResult[0].yellow);
+        var YellowMethod = ad.availabilityDescription(jsonResult[0].yellow);
         res.render('pokemon_id_search', {pokemon_id: pokedexNumber, pokemon_name: pokemonName, 
             ultra_sun: UltraSun, ultra_sun_method: UltraSunMethod, ultra_moon: UltraMoon, ultra_moon_method: UltraMoonMethod, sun: Sun, sun_method: SunMethod, 
             moon: Moon, moon_method: MoonMethod, alpha_sapphire: AlphaSapphire, alpha_sapphire_method: AlphaSapphireMethod, 

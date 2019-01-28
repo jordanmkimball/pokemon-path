@@ -1,4 +1,5 @@
-exports.availabilityDecoder = function(letter) {
+//Takes the game availability letter returned by a sql query, and translates that into whether the pokemon can be obtained in game or not. Returns answer as a 'yes' or 'no' string 
+exports.isObtainableInGame = function(letter) {
     if (letter == 'C' || letter == 'E' || letter == 'B' || letter == 'R' || letter == 'S' || letter == 'D'){
         var obtainableInGame = 'Yes';
     }
@@ -8,7 +9,8 @@ exports.availabilityDecoder = function(letter) {
     return obtainableInGame
 }
 
-exports.availabilityMethod = function(letter) {
+//Takes the game availability letter returned by sql query, and returns a string detailing what that letter means
+exports.availabilityDescription = function(letter) {
     if (letter == 'C') {var method = 'This Pokémon can be caught in-game.'}
     else if (letter == 'E') {var method = 'Catch earlier evolutionary stage, and evolve to obtain this Pokémon.'}
     else if (letter == 'B') {var method = 'A later evolutionary stage of this Pokémon can be caught and bred to obtain this Pokémon in-game.'}

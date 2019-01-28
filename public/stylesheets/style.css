@@ -214,3 +214,9 @@ p.results {
   font-weight: bold;
 }
 
+/*This is for the textboxList on your_path.pug*/
+.textboxList {
+  display: inline;
+  padding-right:10px;
+}
+

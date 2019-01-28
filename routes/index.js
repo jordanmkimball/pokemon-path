@@ -8,16 +8,14 @@ var main_controller = require('../controllers/mainController');
 
 //MAIN PAGES
 
-/* GET home page. */
-router.get('/', function(req, res, next) {
-  res.render('index', { title: 'Which games do I need to catch all the Pokémon?' });
-});
+/* GET request for home page. */
+router.get('/',  main_controller.home_page_get);
 
 //GET request for Your Path page
-router.get('/yourpath', main_controller.yourPathGet);
+router.get('/yourpath', main_controller.your_path_get);
 
 //POST request for Your Path Page
-router.post('/yourpath', main_controller.yourPathPost);
+router.post('/yourpath', main_controller.your_path_post);
 
 //GET request for About page
 router.get('/about', main_controller.about_get);

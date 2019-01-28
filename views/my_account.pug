@@ -4,7 +4,7 @@ block content
   div.maintext
     h1 My Account
 
-    //This div only shows up if the user hasn't entered their name in the form yet
+    //-This div only shows up if the user hasn't entered their name in the form yet
     div#nameForm
 
       p Enter your name below to help customize your Pokémon path. Your name will then appear on various parts of the website.
@@ -22,7 +22,7 @@ block content
 
     div#welcomeUserBlock(hidden="true")
       <br>
-      //JavaScript will replace the "user" below with the actual username 
+      //-JavaScript will replace the "user" below with the actual username 
       h2#welcomeUserText Welcome, user!
       <br>
       <br>
@@ -31,12 +31,12 @@ block content
     div
       <br>
       <br>
-      //Actual date for dateAndTime <span> will be inserted directly from myAccountScripts.js
+      //-Actual date for dateAndTime <span> will be inserted directly from myAccountScripts.js
       p <span class="underline"> Today's date and local time</span><span id="dateAndTime">:  </span>
 
     div
       <br>
-      //This is where the localized string will go. The string that varies based on the users language settings
+      //-This is where the localized string will go. The string that varies based on the users language settings
       p#localizedString
       
 
