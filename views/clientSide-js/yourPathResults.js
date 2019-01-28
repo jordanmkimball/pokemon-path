@@ -1,3 +1,4 @@
+//ClientSide code associated withthe your_path_results.pug page:
 let yourPathResultsHeader = document.getElementById("yourPathResultsHeader");
 let missingPokemonHeader = document.getElementById("missingPokemonHeader");
 
