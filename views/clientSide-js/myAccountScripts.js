@@ -238,7 +238,7 @@ setBrowserLangText();
 //Adds english name of user's selected default language
 setUserLangText();
 
-console.log("Hello, fellow developer")
+console.log("Hello, fellow developer");
 
 
 //START OF EVENT HANDLERS
