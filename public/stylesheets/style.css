@@ -188,16 +188,17 @@ a.noColor {
 
 /*END OF CSS FOR THE IMAGES
 
+/*Use this class to center text*/
+.centered {
+  text-align: center;
+}
+
 
 /* use this class to underline specified text */
 .underline {
     text-decoration: underline;
 }
 
-/* This is for the pokemon_id_search.pug page */
-#IdAndName {
-    text-align: center;
-}
 
 /*This is the CSS for displaying the totals for the your_path_results*/
 p.results {
@@ -206,6 +207,10 @@ p.results {
 
 /*This is the CSS for displaying the game recommendations for you_path_results*/
 #recommendations {
+  font-size: 1.15em;
+}
+
+#localizedString {
   font-size: 1.15em;
 }
 
@@ -219,4 +224,12 @@ p.results {
   display: inline;
   padding-right:10px;
 }
+
+/*This is for the account information on my_account.pug page*/
+#accountInfo {
+  padding-left:30px;
+  width: 75%
+}
+
+
 

@@ -7,18 +7,42 @@ block content
     //-This div only shows up if the user hasn't entered their name in the form yet
     div#nameForm
 
-      p Enter your name below to help customize your Pokémon path. Your name will then appear on various parts of the website.
+      p Enter your name and preferred language below to help customize your Pokémon path. Your name will then appear on various parts of the website.
       <br>
 
       form(method='' action='')
-        .form-group
-        label Account Information: <br><br>
-
-          label First Name: <br>
-          input#inputNameTextbox(type="text", name="firstname")
-          <br>
-          <br>
-          input#submitButton(type="submit", value="Submit")
+        div#accountInfo
+          label Account Information: <br><br>
+            label First Name: <br>
+            input#inputNameTextbox(type="text", name="firstname")
+            <br>
+            <br>
+            label Please select your language preference:
+            <br>
+            <br>
+            input(type="radio" id="browser" name="language" value="browser" checked)
+            | Use my browser's default language <br>
+            input(type="radio" id="english" name="language" value="en") 
+            | English <br>
+            input(type="radio" id="spanish" name="language" value="es")
+            | Spanish <br>
+            input(type="radio" id="french" name="language" value="fr")
+            | French <br>
+            input(type="radio" id="german" name="language" value="de")
+            | German <br>
+            input(type="radio" id="chinese" name="language" value="zh")
+            | Chinese <br>
+            input(type="radio" id="hindi" name="language" value="hi")
+            | Hindi <br>
+            input(type="radio" id="arabic" name="language" value="ar")
+            | Arabic <br>
+            input(type="radio" id="malay" name="language" value="ms")
+            | Malay <br>
+            input(type="radio" id="russian" name="language" value="ru")
+            | Russian
+            <br>
+            <br>
+            input#submitButton(type="submit", value="Submit")
 
     div#welcomeUserBlock(hidden="true")
       <br>
@@ -26,18 +50,24 @@ block content
       h2#welcomeUserText Welcome, user!
       <br>
       <br>
+      p Your preferred language is currently set to <span id="userLangText" class="bold">
+      p#noteAboutTranslations Please note: This web application does not actually support full translations for any languages outside of English. The only sentence that changes based on your selected language preference is the sentence at the very bottom of this web page. This sentence will normally show up in whatever language you have listed as your primary language in your browser settings (you can see what language you currently have listed as your browser language at the bottom of this webpage). However, the language you selected as part of your account information will override this.
       button.btn.btn-primary(type='submit') Clear Account Data
 
-    div
+    div.centered
+      <br>
+      <br>
+      <br>
       <br>
       <br>
       //-Actual date for dateAndTime <span> will be inserted directly from myAccountScripts.js
       p <span class="underline"> Today's date and local time</span><span id="dateAndTime">:  </span>
 
-    div
-      <br>
+    div.centered
       //-This is where the localized string will go. The string that varies based on the users language settings
       p#localizedString
+      //-The browserLanguagePref span and the notTranslatedWarning span will both be filled in by clientSide JavaScript
+      p#browserLangBlock Your browser currently uses <span id="browserLangText" class="bold"></span> as its preferred language. <span id="notTranslatedWarning"></span>
       
 
 
