@@ -224,19 +224,21 @@ if(userLangPref == ""){
     userLangPref = browserLangPref;
 }
 
-console.log("browserLangPref: " + browserLangPref);
-console.log("userLangPref: " + userLangPref);
+
 
 //Retrieve the local date and time. Use moment.js to format date and time, and display on myAccount page 
 var todaysDate = new Date();
-console.log(todaysDate);
 todaysDate = moment(todaysDate).format("MMMM Do YYYY, hh:mm a");;
 dateAndTime.textContent = dateAndTime.textContent + todaysDate;
 
 //Translates the localizedString into the users preferred language or the browsers preferred language if no selection has been made yet
 setlocalizedString(userLangPref);
+//Adds english name of user's browser's default language
 setBrowserLangText();
+//Adds english name of user's selected default language
 setUserLangText();
+
+console.log("Hello, fellow developer")
 
 
 //START OF EVENT HANDLERS
@@ -244,7 +246,6 @@ setUserLangText();
 //ON acountForm Submition. Record User Selections in localStorage. Hide accountForm, Show welcomeUserBlock
 form.addEventListener('submit', function(e){
     e.preventDefault();
-    console.log(input.value);
     userName = input.value;
     //Function won't accept empty strings or a name over 70 characters long
     if(userName == "" || userName.length > 70){
@@ -301,10 +302,6 @@ form.addEventListener('submit', function(e){
         }
         setBrowserLangText();
         setUserLangText();
-
-        //Verifying that things have been set up correctly
-        console.log("userLangPref: " + userLangPref);
-        console.log("localStorage: " + JSON.stringify(localStorage));
     } 
 });
 
@@ -314,7 +311,6 @@ clearButton.addEventListener('click', function() {
     //Clear local Storage
     localStorage.clear();
     userLangPref = "";
-    console.log("userLangPref: " + userLangPref);
     switchVisability();
     setlocalizedString(userLangPref);
     setBrowserLangText();
