@@ -3,7 +3,7 @@
 How to install and use Pokemon-path
 For capstone project reviewers
 
-The easiest way to access my project is to simply visit it using the internet. There is absolutely no need for you to go through the hassle of trying to get node.js to work on your computer if you aren’t already familiar with it. The entire project is currently live on Heroku right now. Simply click the link below to visit it.
+The easiest way to access my project is to simply visit it using the internet. There is absolutely no need for you to go through the hassle of trying to get node.js to work on your computer if you aren’t already familiar with it. The entire project is currently live on Heroku right now. Simply copy the link below into your url. 
 
 https://pokemon-path.herokuapp.com/
 
