@@ -1,12 +1,16 @@
 extends layout
 
 block content
-  div.maintext
+  div.maintext.widerSpacing
     h1 About this Web Application
 
-    p This web application was created primarily to be a coding sample for future employers. Right now I am working through courses in the Microsoft Professional Program for Entry Level Software Development, with the goal of obtaining a job in the field by February 2019.
+    p This web application was created as my Capstone Project for the Microsoft Professional Program in Entry Level Software Development. It is also meant to be a coding sample for potential employers. My goal is to obtain a job in software development by March 2019. 
 
-    p The website itself was developed using Node.js and the Express Application Generator. It utilizes Pug as a view engine, and is connected to a PostgreSQL database. The database was created based on information obtained from a table of <a href ='https://bulbapedia.bulbagarden.net/wiki/List_of_Pok%C3%A9mon_by_availability'>Pokémon by Availability</a>, which can be found on <a href = 'https://bulbapedia.bulbagarden.net/wiki/Main_Page'>Bulbapedia</a>. I randomly selected 100 entries, and fact-checked them against data from <a href='https://www.serebii.net/'>Serebii</a> to verify accuracy, and found no errors.
+    p I came up with this project after doing several user interviews with Pokémon players. From the interviews I learned that many of the players genuinely wanted to obtain every Pokémon in the games, but didn’t know the best way to go about obtaining that goal. One player I interviewed assumed they would need every game (all 29 of them!) to be able to do it. After doing some searches online, I realized that the players I had interviewed weren’t alone in their desire to have this kind of information, but also that there really weren’t any great answers online. I could find no application that allowed you to see how many Pokémon you could obtain based on the games you already had.
+
+    p The website itself was developed using Node.js and the Express Application Generator. It utilizes Pug as a view engine, and is connected to a PostgreSQL database. The database was created based on information obtained from a table of <a href='https://bulbapedia.bulbagarden.net/wiki/List_of_Pok%C3%A9mon_by_availability'>Pokémon by Availability</a>, which can be found on <a href = 'https://bulbapedia.bulbagarden.net/wiki/Main_Page'>Bulbapedia</a>. I randomly selected 100 entries, and fact-checked them against data from <a href='https://www.serebii.net/'>Serebii</a> to verify accuracy, and found no errors.
+
+    p Some additional website functionality can be found on the my account page. This was added more to satisfy course requirement, and add depth to this site as a coding sample. On the my account page you can input your name, and your language preference. The site will then client-side JavaScript to store this information in local storage and reference it on other parts of the website. I also included a “localized string” that will change based on your selected language preference. If no language preference is selected it will display it in the primary language that your browser uses if the translation is available. Additionally I used moment.js to format a date object that should show the current date and time in your local time zone.
 
     p The code for the web application is available on <a href='https://github.com/jordanmkimball/pokemon-path'>Github</a>, for any who are interested. 
 
