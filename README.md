@@ -55,6 +55,7 @@ npm install --save-dev nodemon
 ```
 
 5. If you have followed the steps up to this point, you should be ready to run the project. Again make sure you are in the project directory and run: 
+<<<<<<< HEAD
 
 ```SET DEBUG=pokemon-path:* & npm run devstart```
 
@@ -77,6 +78,30 @@ npm install --save-dev nodemon
 
 *Situation*
 
+=======
+
+```SET DEBUG=pokemon-path:* & npm run devstart```
+
+6. Open your favorite browser and type the following into the URL:
+
+```localhost:3000```
+
+7. You should be good to go. Enjoy!
+
+## Scenarios:
+*Capstone Project Requirement*
+
+
+[Paper Prototype YouTube Link](https://youtu.be/9WzDLAp5OXM)
+
+
+
+**Scenario 1** – Cardan Figures out what game he should buy next
+
+
+*Situation*
+
+>>>>>>> bc097b256c8c6f518a8ea8e153d103ba761440ec
 Cardan is a university student who has been playing Pokémon games since he was a teenager. He has always dreamed of being able to catch one of every Pokémon. He currently owns 8 different Pokémon games including one of the newest games. He isn’t sure if he will be able to catch every Pokémon with his current set of games, or if he should buy a new game.
 
 *Outcome*
@@ -122,6 +147,7 @@ Taylor uses the Pokemon-path website and directs herself to the new players link
 **Dates must appear in the user's local time:** On the [My Account Page](https://pokemon-path.herokuapp.com/myaccount), you should see the current date and time in your browser's local time at the bottom of the screen.
 
 **At least one string must be localizable:** On the [My Account Page](https://pokemon-path.herokuapp.com/myaccount) you should see a sentence that says something to the effect of:
+<<<<<<< HEAD
 
 ```“This sentence changes based on your browser language setting”```
 
@@ -165,6 +191,57 @@ You can change the translation of the string *without changing your browser sett
 *Local>Stylesheets> style.css:* This is where the CSS file that adds style to the webpage is stored.
 
 *Local>images:* This is the folder that stores all the website pictures.
+=======
+
+```“This sentence changes based on your browser language setting”```
+
+When you first enter the page, if your primary browser language is set to English, you will see the sentence in English. However if your primary browser language is set to Spanish, French, German, Chinese, Hindi, Arabic, Malay, or Russian, you will see it in that language instead.
+
+You can change the translation of the string *without changing your browser setting.* Just select one of the other languages on the My Account form. This will override your browsers language preference and display the sentence in your selected language instead.
+
+**Program must store information about the user:** When you submit the [My Account Page](https://pokemon-path.herokuapp.com/myaccount) form, your First Name selection, and your Language Preference will be stored in local storage. If you go through the [Your Path to Catch’em All](https://pokemon-path.herokuapp.com/yourpath) tab after and select your games again, the website will greet you by name. The header will say “YourNameHere’s Path to Catch’em All” instead of just “Your Path to Catch’em All”.
+
+
+## How the code is organized
+*For those who want to understand what the code is doing*
+
+
+
+**Naming conventions I used**
+
+*Pug files:* naming_convention
+
+*JavaScript files:* namingConvention
+
+*Names of GET and POST functions:* 	naming_convention
+
+*All other JavaScript/Node.js variables:* namingConvention
+
+*Variables in pug files:* naming_convention
+
+
+**Descriptions of the different Files/Folders:**
+
+*app.js:*  sets up the modules and routes, and establishes pug as the view engine. 
+
+*routes> index.js:*  Establishes the routes for the program. This determines what URL routes correspond to which website pages. Calls on ```controllers> mainController.js``` to actually render the pages.
+
+**_controllers> mainController.js:_** Holds all the functions that actually render the website pages. This is where most of the app logic is written. This is also the file which connects to the PostgreSQL database.
+
+*My_modules:* This is where keep all my custom Node.js modules. The functions contained inside them help run the app, create the SQL queries, and keep track of Constant values that are referred to multiple times throughout the website. 
+
+*Node_modules:* This is where all the node modules are stored. I didn’t write any of the code here. You can just ignore this part.
+
+*Local>Stylesheets> style.css:* This is where the CSS file that adds style to the webpage is stored.
+
+*Local>images:* This is the folder that stores all the website pictures.
+
+*Views:* This is where the pug files (the things that eventually turn into html files) are stored. It is also where all the client-side JavaScript files are stored, as well as the moment.js module which is used to format dates. I actually use client-side JavaScript to store any information about the user.
+
+*Package.json:* This lists all the project dependencies. 
+
+*Pokemon.db:* The PostgreSQL database that the application makes its queries to. 
+>>>>>>> bc097b256c8c6f518a8ea8e153d103ba761440ec
 
 *Views:* This is where the pug files (the things that eventually turn into html files) are stored. It is also where all the client-side JavaScript files are stored, as well as the moment.js module which is used to format dates. I actually use client-side JavaScript to store any information about the user.
 
